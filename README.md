@@ -77,7 +77,7 @@ Backend (Planned / Integrated)
 * Database design for multi-vendor e-commerce
 * AI service integration and automation (n8n)
 
----
+
 
 📐 UI & UX Design
 
@@ -86,44 +86,6 @@ Backend (Planned / Integrated)
 * Separate dashboards for User, Shop, and Admin
 * Reusable components and clean layout structure
 
----
-
-📂 Project Structure
-
-
-project-root/
-│
-├─ frontend/                # Frontend (React + Vite)
-│  ├─ src/
-│  │  ├─ components/        # Reusable UI components (Button, Modal, Card...)
-│  │  ├─ pages/             # Page-level components (Home, Product, Cart...)
-│  │  ├─ layouts/           # Layouts for User, Shop, Admin
-│  │  ├─ services/          # API calls (auth, product, order...)
-│  │  ├─ hooks/             # Custom React hooks
-│  │  ├─ assets/            # Images, icons, static files
-│  │  ├─ routes/            # Route definitions & role-based routing
-│  │  ├─ utils/             # Helper functions
-│  │  └─ main.jsx           # Application entry point
-│  │
-│  ├─ public/
-│  ├─ index.html
-│  ├─ vite.config.js
-│  └─ package.json
-│
-├─ backend/                 # Backend (API Server)
-│  ├─ src/
-│  │  ├─ controllers/       # Handle request logic
-│  │  ├─ routes/            # API route definitions
-│  │  ├─ models/            # Database models
-│  │  ├─ services/          # Business logic
-│  │  ├─ middlewares/       # Auth, validation, error handling
-│  │  ├─ configs/           # Environment & database configs
-│  │  └─ app.js             # Server entry point
-│  │
-│  ├─ package.json
-│  └─ .env
-│
-└─ README.md
 
 
 
