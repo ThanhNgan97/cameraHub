@@ -1,5 +1,6 @@
 import { FaArrowLeft, FaCheckCircle, FaChevronRight } from 'react-icons/fa';
 import { useLanguage } from '../../context/LanguageContext';
+import Logo from '../common/Logo';
 
 export default function PrivacyPolicy({ onBack }) {
     const { t } = useLanguage();
@@ -13,9 +14,9 @@ export default function PrivacyPolicy({ onBack }) {
                 >
                     <FaArrowLeft /> {t('auth.back_auth')}
                 </button>
-                <div className="space-y-1">
-                    <h2 className="text-2xl font-black text-[#E58F10]">CameraHub.</h2>
-                    <p className="text-xs text-gray-400 italic">{t('auth.terms_update')}</p>
+                <div className="space-y-1 flex flex-col items-center">
+                    {/* <Logo textClassName="text-2xl" /> */}
+                    {/* <p className="text-xs text-gray-400 italic">{t('auth.terms_update')}</p> */}
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-4 leading-relaxed">
                     {t('auth.privacy_title')}

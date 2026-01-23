@@ -8,6 +8,8 @@ import VerifyOTP from './VerifyOTP';
 import TermsOfService from './TermsOfService';
 import PrivacyPolicy from './PrivacyPolicy';
 
+import Logo from '../common/Logo';
+
 export default function AuthModal({ isOpen, onClose }) {
     const [view, setView] = useState('login'); // 'login', 'register', 'forgot', 'verify_otp'
     const { t } = useLanguage();
@@ -38,12 +40,10 @@ export default function AuthModal({ isOpen, onClose }) {
                 </button>
 
                 {/* Header */}
-                <div className="text-center mb-6">
-                    <h2 className="text-3xl font-black tracking-tight mb-2 text-gray-900 dark:text-white">
-                        CameraHub.
-                    </h2>
+                <div className="flex flex-col items-center mb-6">
+                    <Logo />
                     {view !== 'forgot' && view !== 'verify_otp' && view !== 'terms' && view !== 'privacy' && (
-                        <p className="text-gray-500 dark:text-gray-400 text-sm">
+                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
                             {t('auth.tagline')}
                         </p>
                     )}

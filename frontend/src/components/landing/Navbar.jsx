@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
 import AuthModal from '../auth/AuthModal';
+import Logo from '../common/Logo';
 
 export default function Navbar() {
     const { theme, toggleTheme } = useTheme();
@@ -13,6 +14,20 @@ export default function Navbar() {
         setLanguage(prev => prev === 'vi' ? 'en' : 'vi');
     };
 
+    const scrollToSection = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            const navbarHeight = 84; // 80px + 4px breathing room
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - navbarHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
+    };
+
     return (
         <>
             <div className="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
@@ -21,38 +36,36 @@ export default function Navbar() {
                         <button className="material-symbols-outlined text-2xl text-text-light dark:text-text-dark p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors lg:hidden">
                             menu
                         </button>
-                        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-center lg:text-left">
-                            CameraHub
-                        </h2>
+                        <Logo />
                     </div>
                     <nav className="hidden lg:flex items-center justify-center flex-1 gap-10">
                         <button
                             className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
-                            onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => scrollToSection('hero')}
                         >
                             {t('nav.home')}
                         </button>
                         <button
                             className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
-                            onClick={() => document.getElementById('bestsellers')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => scrollToSection('bestsellers')}
                         >
                             {t('nav.cameras')}
                         </button>
                         <button
                             className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
-                            onClick={() => document.getElementById('special-offers')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => scrollToSection('special-offers')}
                         >
                             {t('nav.lenses')}
                         </button>
-                        <button
+                        {/* <button
                             className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
-                            onClick={() => document.getElementById('special-offers')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => scrollToSection('special-offers')}
                         >
                             {t('nav.accessories')}
-                        </button>
+                        </button> */}
                         <button
                             className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
-                            onClick={() => document.getElementById('newsletter')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => scrollToSection('newsletter')}
                         >
                             {t('nav.news')}
                         </button>

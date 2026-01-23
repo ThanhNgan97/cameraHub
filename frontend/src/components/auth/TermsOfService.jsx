@@ -1,5 +1,6 @@
 import { FaArrowLeft } from 'react-icons/fa';
 import { useLanguage } from '../../context/LanguageContext';
+import Logo from '../common/Logo';
 
 export default function TermsOfService({ onBack }) {
     const { t } = useLanguage();
@@ -36,6 +37,9 @@ export default function TermsOfService({ onBack }) {
                 >
                     <FaArrowLeft /> {t('auth.back_auth')}
                 </button>
+                <div className="mb-4 flex justify-center">
+                    <Logo textClassName="text-xl" />
+                </div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                     {t('auth.terms_title')}
                 </h3>
