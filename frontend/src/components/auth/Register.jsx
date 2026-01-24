@@ -4,7 +4,10 @@ import { MdEmail, MdLock, MdCached } from 'react-icons/md';
 import { useLanguage } from '../../context/LanguageContext';
 
 
+import { useNavigate } from 'react-router-dom';
+
 export default function Register() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -56,6 +59,13 @@ export default function Register() {
         if (validate()) {
             // Handle registration logic here
             console.log('Form submitted:', formData);
+            // Navigate to User Home
+            navigate('/user/home');
+            // We should also close the modal potentially, but since we are navigating away, 
+            // the modal usually lives in context or parent. 
+            // If the modal is in Navbar (which is present in Home too), we might need to close it.
+            // But navigation usually unmounts or changes context. 
+            // Let's assume navigation is enough for now, or the user will ask to close modal.
         }
     };
 

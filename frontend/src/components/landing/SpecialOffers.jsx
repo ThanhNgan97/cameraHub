@@ -6,7 +6,7 @@ const products = [
         id: 3,
         name: "FE 24-70mm GM II",
         category: "G Master Lens",
-        price: "45.990k",
+        price: "45.990.000đ",
         discount: null,
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDf7QefPTiIQ9mZo2nWmm2qLARfMdM-SeSBWZ7zrlGYLiGRqm43rcSODblWzqoTZqlQrXjDp6WwxeyGMLANenV3a4JXeNbmW2VKY2iYQvzEl0MjHQKZOqLWKQ-J2-6c1tVy2_HkjpUbUbKTtOF06xYL3cGjVoIPbZywH6omin_NMxQCMouVjLvf3A_P03QqWgINqSh7fRpx9Urh9ec6GTdd-7oeIo6Y-26oIJcJ2vJOPOFFlBJ4og_psr6sapBSjk1DX6rDIqwL0Fcm"
     },
@@ -14,7 +14,7 @@ const products = [
         id: 9,
         name: "Sony Alpha A6400",
         category: "Mirrorless APS-C",
-        price: "23.990k",
+        price: "23.990.000đ",
         discount: "-8%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNGR2IzzITchfVN_Y0hhOvYf7i-UXZ6fpkgo9HBmqOo1dJuGjfm-uxSZZC6o41kXRCF9Bc_jzB1K_kEtvUnptlM7rxP2AOvSp8XpSY1N4qclDkkuzyK2R2pNnjcWKGWDRlhJBIiD44GHPJyXmLHja_3cwV9nrN56X198B5AvNS6m42JeO-6Xy5TJdqErdXe6Y2UE0xZ5rDGhmlZA5niNChTeQ22Z9N0MEvo4AVayfDl6K1NzFNv_Hmk3z--w86vA4yGjHwoS0RoNK6"
     },
@@ -22,7 +22,7 @@ const products = [
         id: 7,
         name: "FE 70-200mm GM II",
         category: "Telephoto Zoom",
-        price: "67.990k",
+        price: "67.990.000đ",
         discount: "-10%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDf7QefPTiIQ9mZo2nWmm2qLARfMdM-SeSBWZ7zrlGYLiGRqm43rcSODblWzqoTZqlQrXjDp6WwxeyGMLANenV3a4JXeNbmW2VKY2iYQvzEl0MjHQKZOqLWKQ-J2-6c1tVy2_HkjpUbUbKTtOF06xYL3cGjVoIPbZywH6omin_NMxQCMouVjLvf3A_P03QqWgINqSh7fRpx9Urh9ec6GTdd-7oeIo6Y-26oIJcJ2vJOPOFFlBJ4og_psr6sapBSjk1DX6rDIqwL0Fcm"
     },
@@ -30,7 +30,7 @@ const products = [
         id: 1,
         name: "Sony Alpha 7 IV",
         category: "Body Only",
-        price: "59.990k",
+        price: "59.990.000đ",
         discount: "-10%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAvi7bVaBDbgyPwG3NB2LO9QobXh5Jl5Gimy3tiqfzgj2Ah0MdUUtuIzZ3eA4S7NLfwUyONjuU8gCmZ6xv9zztThcI5zRk7SMn_8SsLilC27Xpl4a9XkiOlfn-GVzrfeubTx3W_YMI6woI_nynqCKJ8vHDX7hv2U4vG6FlSMGMyAaEe8MR4Rwh1YMxu-YUAHbsMppD6b7UWFe-ad7M_0AJhz5IrWawkw--tlXbo78nS_RMn3LHv5pDl7c62G1v8lseSpAO_Oz7mEuh3"
     },
@@ -38,7 +38,7 @@ const products = [
         id: 12,
         name: "Sony FX30",
         category: "Cinema Line APS-C",
-        price: "39.990k",
+        price: "39.990.000đ",
         discount: null,
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDf7QefPTiIQ9mZo2nWmm2qLARfMdM-SeSBWZ7zrlGYLiGRqm43rcSODblWzqoTZqlQrXjDp6WwxeyGMLANenV3a4JXeNbmW2VKY2iYQvzEl0MjHQKZOqLWKQ-J2-6c1tVy2_HkjpUbUbKTtOF06xYL3cGjVoIPbZywH6omin_NMxQCMouVjLvf3A_P03QqWgINqSh7fRpx9Urh9ec6GTdd-7oeIo6Y-26oIJcJ2vJOPOFFlBJ4og_psr6sapBSjk1DX6rDIqwL0Fcm"
     },
@@ -46,7 +46,7 @@ const products = [
         id: 5,
         name: "Sony GP-VPT2BT",
         category: "Shooting Grip",
-        price: "2.990k",
+        price: "2.990.000đ",
         discount: "-5%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdrkrlXLExB25Vo7bW0EUR0nSC152jG5Mh6IsowsS2LGmgavV_7Z9VGep5CfYgMRBqqtecX5a7uoEYjBTEBo0Fh0Bk25tdBFDgQlNohYngOHDj3Be1JZFLhNgScYJwGteQDF-Iaw2BL8q3cPX2z2XbzyTdDbDbkcakwtK-rchr6mqjelXgBBYzt3wdD6EakSfpuf9vuMstGkqVYiZ0OgRdBCJXRhOaRcIb7e-1Ggep8LCdrYWu8GPW9Uy7VNrEyAmIQWf06fJpYG-k"
     },
@@ -54,7 +54,7 @@ const products = [
         id: 10,
         name: "Sony Alpha A6600",
         category: "APS-C Premium",
-        price: "29.990k",
+        price: "29.990.000đ",
         discount: "-7%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNGR2IzzITchfVN_Y0hhOvYf7i-UXZ6fpkgo9HBmqOo1dJuGjfm-uxSZZ6o41kXRCF9Bc_jzB1K_kEtvUnptlM7rxP2AOvSp8XpSY1N4qclDkkuzyK2R2pNnjcWKGWDRlhJBIiD44GHPJyXmLHja_3cwV9nrN56X198B5AvNS6m42JeO-6Xy5TJdqErdXe6Y2UE0xZ5rDGhmlZA5niNChTeQ22Z9N0MEvo4AVayfDl6K1NzFNv_Hmk3z--w86vA4yGjHwoS0RoNK6"
     },
@@ -62,7 +62,7 @@ const products = [
         id: 2,
         name: "Sony ZV-E10",
         category: "Kit 16-50mm",
-        price: "16.990k",
+        price: "16.990.000đ",
         discount: "-15%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCGx7A4URJ5YCHz2IW_xFaOkCANZPUZL5m2UqYZi63SU4s234tjvPNSk85MqMEyj3uhZS8WZgk2oCHbLZWc2ziyRmg43OJVU-Tv4rWhdv8noEcoowp-dhuc1vxBZhMf1K09pTvVxDb7wZDyL0DgvVTJeC4swszLcw9ZOkMwkk9kZ3MxcZq_RHqaHLMJySZkOIKH4H7JbGnQ4F9N142-iAHPB0KgMngQv8awfuaztQQfGakKh0L3DtgnLYqMqtbabAW7ZEgN0B4Q3wC5"
     },
@@ -70,7 +70,7 @@ const products = [
         id: 14,
         name: "FE 28-70mm Kit",
         category: "Lens",
-        price: "6.990k",
+        price: "6.990.000đ",
         discount: "-5%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDf7QefPTiIQ9mZo2nWmm2qLARfMdM-SeSBWZ7zrlGYLiGRqm43rcSODblWzqoTZqlQrXjDp6WwxeyGMLANenV3a4JXeNbmW2VKY2iYQvzEl0MjHQKZOqLWKQ-J2-6c1tVy2_HkjpUbUbKTtOF06xYL3cGjVoIPbZywH6omin_NMxQCMouVjLvf3A_P03QqWgINqSh7fRpx9Urh9ec6GTdd-7oeIo6Y-26oIJcJ2vJOPOFFlBJ4og_psr6sapBSjk1DX6rDIqwL0Fcm"
     },
@@ -78,7 +78,7 @@ const products = [
         id: 6,
         name: "Sony Alpha 7R V",
         category: "High Resolution",
-        price: "89.990k",
+        price: "89.990.000đ",
         discount: null,
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdrkrlXLExB25Vo7bW0EUR0nSC152jG5Mh6IsowsS2LGmgavV_7Z9VGep5CfYgMRBqqtecX5a7uoEYjBTEBo0Fh0Bk25tdBFDgQlNohYngOHDj3Be1JZFLhNgScYJwGteQDF-Iaw2BL8q3cPX2z2XbzyTdDbDbkcakwtK-rchr6mqjelXgBBYzt3wdD6EakSfpuf9vuMstGkqVYiZ0OgRdBCJXRhOaRcIb7e-1Ggep8LCdrYWu8GPW9Uy7VNrEyAmIQWf06fJpYG-k"
     },
@@ -86,7 +86,7 @@ const products = [
         id: 11,
         name: "Sony RX100 VII",
         category: "Compact Camera",
-        price: "24.990k",
+        price: "24.990.000đ",
         discount: "-10%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAvi7bVaBDbgyPwG3NB2LO9QobXh5Jl5Gimy3tiqfzgj2Ah0MdUUtuIzZ3eA4S7NLfwUyONjuU8gCmZ6xv9zztThcI5zRk7SMn_8SsLilC27Xpl4a9XkiOlfn-GVzrfeubTx3W_YMI6woI_nynqCKJ8vHDX7hv2U4vG6FlSMGMyAaEe8MR4Rwh1YMxu-YUAHbsMppD6b7UWFe-ad7M_0AJhz5IrWawkw--tlXbo78nS_RMn3LHv5pDl7c62G1v8lseSpAO_Oz7mEuh3"
     },
@@ -94,7 +94,7 @@ const products = [
         id: 13,
         name: "Sony A1",
         category: "Flagship Mirrorless",
-        price: "159.990k",
+        price: "159.990.000đ",
         discount: null,
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAvi7bVaBDbgyPwG3NB2LO9QobXh5Jl5Gimy3tiqfzgj2Ah0MdUUtuIzZ3eA4S7NLfwUyONjuU8gCmZ6xv9zztThcI5zRk7SMn_8SsLilC27Xpl4a9XkiOlfn-GVzrfeubTx3W_YMI6woI_nynqCKJ8vHDX7hv2U4vG6FlSMGMyAaEe8MR4Rwh1YMxu-YUAHbsMppD6b7UWFe-ad7M_0AJhz5IrWawkw--tlXbo78nS_RMn3LHv5pDl7c62G1v8lseSpAO_Oz7mEuh3"
     },
@@ -102,7 +102,7 @@ const products = [
         id: 8,
         name: "Sony FX3",
         category: "Cinema Line",
-        price: "92.990k",
+        price: "92.990.000đ",
         discount: null,
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAvi7bVaBDbgyPwG3NB2LO9QobXh5Jl5Gimy3tiqfzgj2Ah0MdUUtuIzZ3eA4S7NLfwUyONjuU8gCmZ6xv9zztThcI5zRk7SMn_8SsLilC27Xpl4a9XkiOlfn-GVzrfeubTx3W_YMI6woI_nynqCKJ8vHDX7hv2U4vG6FlSMGMyAaEe8MR4Rwh1YMxu-YUAHbsMppD6b7UWFe-ad7M_0AJhz5IrWawkw--tlXbo78nS_RMn3LHv5pDl7c62G1v8lseSpAO_Oz7mEuh3"
     },
@@ -110,7 +110,7 @@ const products = [
         id: 15,
         name: "Sony ZV-E1",
         category: "Vlog Full-frame",
-        price: "79.990k",
+        price: "79.990.000đ",
         discount: "-12%",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAvi7bVaBDbgyPwG3NB2LO9QobXh5Jl5Gimy3tiqfzgj2Ah0MdUUtuIzZ3eA4S7NLfwUyONjuU8gCmZ6xv9zztThcI5zRk7SMn_8SsLilC27Xpl4a9XkiOlfn-GVzrfeubTx3W_YMI6woI_nynqCKJ8vHDX7hv2U4vG6FlSMGMyAaEe8MR4Rwh1YMxu-YUAHbsMppD6b7UWFe-ad7M_0AJhz5IrWawkw--tlXbo78nS_RMn3LHv5pDl7c62G1v8lseSpAO_Oz7mEuh3"
     }

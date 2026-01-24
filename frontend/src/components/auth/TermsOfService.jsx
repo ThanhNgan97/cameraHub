@@ -38,7 +38,7 @@ export default function TermsOfService({ onBack }) {
                     <FaArrowLeft /> {t('auth.back_auth')}
                 </button>
                 <div className="mb-4 flex justify-center">
-                    <Logo textClassName="text-xl" />
+                    {/* <Logo textClassName="text-xl" /> */}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                     {t('auth.terms_title')}

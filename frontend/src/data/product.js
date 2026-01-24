@@ -1,0 +1,312 @@
+export const PRODUCTS = [
+        {
+            id: 1,
+            name: "Sony Alpha A7 IV Body",
+            image: "https://bizweb.dktcdn.net/100/507/659/products/sony-alpha-a7m4-13-500x500-1.jpg?v=1708060110230",
+            rating: 4.9,
+            reviews: 210,
+            price: 58990000,
+            originalPrice: 62990000,
+            sale: "-6%",
+            soldOut: false
+        },
+        {
+            id: 2,
+            name: "SONY ALPHA A6400 +16-50MM F3.5-5.6 OSS",
+            image: "https://bizweb.dktcdn.net/thumb/1024x1024/100/297/199/products/284693910-5173412966076136-1371159811766084390-n.jpg?v=1654750509123",
+            rating: 4.7,
+            reviews: 180,
+            price: 20990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 3,
+            name: "Sony Alpha A6700 Body",
+            image: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?q=80&w=500&auto=format&fit=crop",
+            rating: 4.8,
+            reviews: 95,
+            price: 35990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 4,
+            name: "Canon EOS R5 Body",
+            image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop",
+            rating: 4.9,
+            reviews: 320,
+            price: 89990000,
+            originalPrice: 95000000,
+            sale: "-5%",
+            soldOut: false
+        },
+        {
+            id: 5,
+            name: "Canon EOS R6 Mark II",
+            image: "https://binhminhdigital.com/storedata/images/product/may-anh-canon-eos-r6-mark-ii-lens-24105mm-f4-l.jpg",
+            rating: 4.8,
+            reviews: 160,
+            price: 59990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 6,
+            name: "Canon EOS R10 Kit",
+            image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=500&auto=format&fit=crop",
+            rating: 4.6,
+            reviews: 110,
+            price: 17990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 7,
+            name: "Nikon Z8 Body",
+            image: "https://product.hstatic.net/1000234350/product/1683706042_img_1990357_b306ad71996b4c66906f7c1e871fbe3c_1024x1024.jpg",
+            rating: 4.9,
+            reviews: 88,
+            price: 94990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 8,
+            name: "Nikon Z6 II Body",
+            image: "https://www.mpb.com/media-service/e5dfc942-fa61-4f2c-9543-6729bca645eb",
+            rating: 4.7,
+            reviews: 140,
+            price: 40990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: true
+        },
+        {
+            id: 9,
+            name: "Nikon Z50 Kit",
+            image: "https://mayanh9x.com/image/cache/catalog/san-pham/nikon/nikon-z50-ii-kit-16-50mm-chinh-hang/nikon-z50-ii-chinh-hang-gia-tot-500x500.jpg",
+            rating: 4.6,
+            reviews: 90,
+            price: 18990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 10,
+            name: "Fujifilm X-T5 Body",
+            image: "https://images.unsplash.com/photo-1516724562728-afc824a36e84?q=80&w=500&auto=format&fit=crop",
+            rating: 4.8,
+            reviews: 120,
+            price: 44990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 11,
+            name: "Fujifilm X-S20",
+            image: "https://cdn.vjshop.vn/may-anh/mirrorless/fujifilm/fujifilm-x-s20/body/fujifilm-x-s20.jpg",
+            rating: 4.7,
+            reviews: 75,
+            price: 28990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 12,
+            name: "Fujifilm X100V",
+            image: "https://bizweb.dktcdn.net/thumb/grande/100/297/199/files/403853073-762448085897098-6756280309024142811-n.jpg?v=1701678237253",
+            rating: 5.0,
+            reviews: 500,
+            price: 39990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: true
+        },
+        {
+            id: 13,
+            name: "Panasonic Lumix S5 II",
+            image: "https://cdn.vjshop.vn/may-anh/mirrorless/panasonic/panasonic-lumix-s5-ii/anh-nd/panasonic-lumix-s5-ii-10.jpg",
+            rating: 4.7,
+            reviews: 65,
+            price: 44990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 15,
+            name: "OM System OM-1",
+            image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=500&auto=format&fit=crop",
+            rating: 4.7,
+            reviews: 54,
+            price: 39990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 16,
+            name: "Sony ZV-E10",
+            image: "https://mayanh9x.com/image/catalog/san-pham/mayanh-sony/sony-zv-e10-chinh-hang-sony-vietnam/sony-alpha-zv-e10-kit-16-50mm.jpg",
+            rating: 4.6,
+            reviews: 230,
+            price: 16990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 17,
+            name: "Canon EOS R50",
+            image: "https://cdn.vjshop.vn/may-anh/mirrorless/canon/canon-eos-r50/white-18-45/canon-eos-r50-white-lens-18-45mm-lens-4-500x500.jpg",
+            rating: 4.5,
+            reviews: 60,
+            price: 15990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 18,
+            name: "Nikon Z fc",
+            image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop",
+            rating: 4.6,
+            reviews: 82,
+            price: 22990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 19,
+            name: "Fujifilm X-T30 II",
+            image: "https://images.unsplash.com/photo-1516724562728-afc824a36e84?q=80&w=500&auto=format&fit=crop",
+            rating: 4.6,
+            reviews: 90,
+            price: 19990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+
+
+        {
+            id: 21,
+            name: "Sony FE 24-70mm f/2.8 GM II",
+            image: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=500&q=80",
+            rating: 5.0,
+            reviews: 42,
+            price: 49990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 22,
+            name: "Sony FE 70-200mm f/2.8 GM OSS II",
+            image: "https://binhminhdigital.com/storedata/images/product/ongkinh/sony/ong-kinh-sony-fe-70-200mm-f2-8-gm-oss-ii.jpg",
+            rating: 4.9,
+            reviews: 30,
+            price: 75990000,
+            originalPrice: 79990000,
+            sale: "-5%",
+            soldOut: false
+        },
+        {
+            id: 23,
+            name: "Sony FE 50mm f/1.8",
+            image: "https://bizweb.dktcdn.net/100/107/650/products/sony-fe-50mm-1-8-lens-review-side-angle.jpg?v=1513855286137",
+            rating: 4.7,
+            reviews: 110,
+            price: 7990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 24,
+            name: "Canon RF 50mm f/1.8 STM",
+            image: "https://vn.canon/media/image/2020/11/03/057b4fd6aae14236a14658facaf46ad2_RF50mm+f1.8+STM+Slant.png",
+            rating: 4.6,
+            reviews: 85,
+            price: 7490000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 25,
+            name: "Canon RF 24-105mm f/4-7.1 IS STM",
+            image: "https://mayanhshipmy.com/wp-content/uploads/2024/11/1581548522_IMG_1315920-1024x755.jpg",
+            rating: 4.5,
+            reviews: 95,
+            price: 15990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 26,
+            name: "Nikon Z 24-70mm f/4 S",
+            image: "https://imaging.nikon.com/imaging/lineup/lens/z-mount/z_24-70mmf4s/img/product_01_05.jpg",
+            rating: 4.7,
+            reviews: 56,
+            price: 21990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 27,
+            name: "Nikon Z 85mm f/1.8 S",
+            image: "https://mayanh24h.com/upload/assets/thumb/2024/0627/ar/z-35mm-1-4-1.jpg",
+            rating: 4.8,
+            reviews: 65,
+            price: 21990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 28,
+            name: "Fujifilm XF 35mm f/1.4 R",
+            image: "https://fujifilmshop.vn/wp-content/uploads/2024/09/Ong-kinh-Fujifilm-XF-35mm-f1.4-R-1.jpg.webp",
+            rating: 4.9,
+            reviews: 70,
+            price: 10990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 29,
+            name: "Fujifilm XF 56mm f/1.2 R",
+            image: "https://mayanhhoangto.com/wp-content/uploads/2018/12/56-1.2-R-3.jpg",
+            rating: 5.0,
+            reviews: 34,
+            price: 24990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        },
+        {
+            id: 30,
+            name: "Panasonic Lumix S PRO 50mm f/1.4",
+            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80",
+            rating: 4.8,
+            reviews: 40,
+            price: 30990000,
+            originalPrice: null,
+            sale: null,
+            soldOut: false
+        }
+    ];

@@ -1,12 +1,52 @@
 export const dictionaries = {
     vi: {
         nav: {
-            home: "Trang Chủ",
-            cameras: "Máy Ảnh",
-            lenses: "Ống Kính",
+            home: "Trang chủ",
+            products: "Sản phẩm",
+            cameras: "Máy ảnh",
+            lenses: "Ống kính",
             accessories: "Phụ kiện",
-            news: "Tin Tức",
+            news: "Tin tức",
             search: "Tìm kiếm...",
+            // Tooltips
+            toggle_theme: "Đổi giao diện",
+            change_language: "Đổi ngôn ngữ",
+            search_title: "Tìm kiếm",
+            account: "Tài khoản",
+            cart: "Giỏ hàng",
+            close: "Đóng"
+        },
+        home: {
+            hero_badge: "SẢN PHẨM MỚI NHẤT",
+            hero_title: "Sony Alpha A7 V",
+            hero_desc: "Đỉnh cao công nghệ lấy nét AI và cảm biến full-frame thế hệ mới. Trải nghiệm sức mạnh nhiếp ảnh chuyên nghiệp chưa từng có.",
+            hero_buy: "Mua ngay",
+            hero_view: "Xem chi tiết",
+            cat_title: "Danh mục sản phẩm",
+            cat_view_all: "Xem tất cả danh mục",
+            cat_mirrorless: "MIRRORLESS",
+            cat_dslr: "DSLR",
+            cat_lens: "ỐNG KÍNH",
+            cat_accessories: "PHỤ KIỆN",
+            cat_all: "TẤT CẢ",
+            featured_title: "Sản phẩm nổi bật",
+            featured_sale: "Giảm",
+            featured_sold_out: "Tạm hết hàng",
+            featured_reviews: "đánh giá",
+        },
+        products: {
+            filter_brand: "Hãng sản xuất",
+            filter_price: "Khoảng giá",
+            filter_resolution: "Độ phân giải",
+            filter_condition: "Tình trạng",
+            condition_new: "Mới 100%",
+            condition_used: "Đã qua sử dụng",
+            found: "Tìm thấy",
+            results: "kết quả",
+            sort_by: "Sắp xếp theo",
+            sort_newest: "Mới nhất",
+            sort_price_asc: "Giá thấp đến cao",
+            sort_price_desc: "Giá cao đến thấp",
         },
         hero: {
             newArrival: "Hàng Mới Về",
@@ -20,6 +60,9 @@ export const dictionaries = {
             title: "Dòng Máy Bán Chạy",
             viewAll: "Xem tất cả",
             collapse: "Thu gọn",
+
+            // Categories - using key mapping if possible, or static text for now if dynamic
+
             // Categories - using key mapping if possible, or static text for now if dynamic
             cat_mirrorless: "Mirrorless",
             desc_mirrorless: "Gọn nhẹ & Mạnh mẽ",
@@ -110,8 +153,7 @@ export const dictionaries = {
             otp_desc: "Vui lòng nhập mã 6 số đã được gửi đến email của bạn.",
             verify: "Xác thực",
             resend: "Gửi lại",
-            verify: "Xác thực",
-            resend: "Gửi lại",
+
             not_received: "Chưa nhận được mã?",
             required: "Vui lòng nhập thông tin này",
             nameTooShort: "Tên phải có ít nhất 2 ký tự",
@@ -163,17 +205,256 @@ export const dictionaries = {
             privacy_4_li1: "Truy cập và sao chép dữ liệu",
             privacy_4_li2: "Yêu cầu chỉnh sửa thông tin sai lệch",
             privacy_4_li3: "Yêu cầu xóa tài khoản vĩnh viễn",
-            privacy_btn: "Xác nhận"
+        },
+        productDetail: {
+            // Product Info
+            reviews: "đánh giá",
+            addToCartSuccess: "Thêm vào giỏ hàng thành công!",
+            addToCartTitle: "Thêm vào giỏ hàng ngay",
+            inStock: "Còn hàng (Sẵn sàng giao ngay)",
+            selectConfig: "Lựa chọn cấu hình:",
+            bodyOnly: "Body Only",
+            bodyDesc: "Thân máy, không kèm ống kính",
+            kitLens: "Kit 28-70mm f/3.5-5.6",
+            kitDesc: "Kèm ống kính kit cơ bản",
+            buyNow: "Mua Ngay",
+            deliveryDesc: "Giao hàng tận nơi hoặc nhận tại cửa hàng",
+
+            // Tabs
+            specs: "Thông số kỹ thuật",
+            description: "Mô tả sản phẩm",
+            customerReviews: "Đánh giá từ khách hàng",
+            updatingDesc: "Đang cập nhật mô tả sản phẩm...",
+            viewAllReviews: "Xem tất cả đánh giá...",
+
+            // Gallery
+            newArrival: "Hàng mới",
+            off: "Giảm",
+
+            // Service Policies
+            genuineWarranty: "BẢO HÀNH CHÍNH HÃNG",
+            warrantyDesc: "24 tháng toàn quốc",
+            freeReturn: "ĐỔI TRẢ MIỄN PHÍ",
+            returnDesc: "30 ngày lỗi NSX",
+            freeShipping: "MIỄN PHÍ VẬN CHUYỂN",
+            shippingDesc: "Đơn hàng trên 5tr",
+            installment: "TRẢ GÓP 0%",
+            installmentDesc: "Qua thẻ tín dụng",
+
+            // Similar Products
+            similarProducts: "Sản phẩm tương tự",
+
+            // Specs Table
+            detailedSpecs: "Thông số kỹ thuật chi tiết",
+            sensor: "Cảm biến",
+            processor: "Bộ xử lý ảnh",
+            iso: "ISO",
+            focusPoints: "Điểm lấy nét",
+            video: "Quay phim",
+            screen: "Màn hình",
+            viewfinder: "Kính ngắm",
+            battery: "Pin",
+            viewFullSpecs: "Xem cấu hình đầy đủ",
+
+            // Featured Reviews
+            featuredReviews: "Đánh giá nổi bật",
+            collapse: "Thu gọn",
+            viewAll: "Xem tất cả",
+        },
+        checkout: {
+            title: "Thanh toán",
+            shippingInfo: "Thông tin nhận hàng",
+            fullName: "Họ và tên",
+            fullNamePlaceholder: "Nhập họ tên đầy đủ",
+            phone: "Số điện thoại",
+            phonePlaceholder: "Nhập số điện thoại",
+            email: "Địa chỉ email (Tùy chọn)",
+            emailPlaceholder: "Nhập email để nhận hóa đơn điện tử",
+            address: "Địa chỉ nhận hàng",
+            addressPlaceholder: "Số nhà, tên đường",
+            city: "Tỉnh / Thành phố",
+            selectCity: "Chọn Tỉnh/Thành phố",
+            district: "Quận / Huyện",
+            selectDistrict: "Chọn Quận/Huyện",
+            note: "Ghi chú (Tùy chọn)",
+            notePlaceholder: "Ví dụ: Giao hàng giờ hành chính",
+            paymentMethod: "Phương thức thanh toán",
+            cod: "Thanh toán khi nhận hàng (COD)",
+            codDesc: "Thanh toán bằng tiền mặt khi nhận được hàng",
+            banking: "Chuyển khoản ngân hàng",
+            bankingDesc: "Quét mã QR qua ứng dụng ngân hàng",
+            card: "Thẻ tín dụng / Ghi nợ",
+            cardDesc: "Visa, Mastercard, JCB",
+            ewallet: "Ví điện tử",
+            ewalletDesc: "Momo, VNPay, ZaloPay",
+            orderSummary: "Tóm tắt đơn hàng",
+            items: "sản phẩm",
+            tempCalc: "Tạm tính",
+            shippingFee: "Phí vận chuyển",
+            free: "Miễn phí",
+            vat: "Thuế VAT (8%)",
+            vatIncluded: "Đã bao gồm",
+            total: "Tổng cộng",
+            vatIncludedNote: "(Đã bao gồm VAT)",
+            confirmOrder: "Xác nhận đặt hàng",
+            secureInfo: "Thông tin của bạn được bảo mật an toàn",
+            quantity: "Số lượng"
+        },
+        profile: {
+            personalInfo: "Thông tin cá nhân",
+            total: "Thành tiền",
+            tabs: {
+                all: "Tất cả",
+                pending: "Chờ thanh toán",
+                shipping: "Đang giao",
+                completed: "Hoàn thành",
+                cancelled: "Đã hủy"
+            },
+            status: {
+                pending: "CHỜ THANH TOÁN",
+                shipping: "ĐANG GIAO",
+                completed: "HOÀN THÀNH",
+                cancelled: "ĐÃ HỦY"
+            },
+            actions: {
+                cancel: "Hủy đơn",
+                pay: "Thanh toán",
+                received: "Đã nhận được hàng",
+                track: "Theo dõi",
+                return: "Trả hàng/Hoàn tiền",
+                review: "Đánh giá",
+                buyAgain: "Mua lại"
+            },
+            edit: {
+                title: "Thông tin cá nhân",
+                fullName: "Họ và tên",
+                email: "Email",
+                phone: "Số điện thoại",
+                dob: "Ngày sinh",
+                gender: "Giới tính",
+                genderOptions: {
+                    male: "Nam",
+                    female: "Nữ",
+                    other: "Khác"
+                },
+                save: "Lưu thay đổi",
+                saved: "Đã lưu thay đổi!"
+            },
+            settings: {
+                title: "Hồ sơ cá nhân",
+                menu: {
+                    info: {
+                        title: "Thông tin cá nhân",
+                        desc: "Chỉnh sửa tên, email, sdt"
+                    },
+                    address: {
+                        title: "Sổ địa chỉ",
+                        desc: "Quản lý địa chỉ giao hàng"
+                    },
+                    password: {
+                        title: "Đổi mật khẩu",
+                        desc: "Bảo mật tài khoản"
+                    },
+                    payment: {
+                        title: "Phương thức thanh toán",
+                        desc: "Thẻ tín dụng, ví điện tử"
+                    }
+                },
+                logout: "Đăng xuất"
+            },
+            password: {
+                title: "Đổi mật khẩu",
+                desc: "Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác.",
+                current: "Mật khẩu hiện tại",
+                currentPlaceholder: "Nhập mật khẩu hiện tại",
+                forgot: "Quên mật khẩu?",
+                new: "Mật khẩu mới",
+                newPlaceholder: "Nhập mật khẩu mới",
+                confirm: "Xác nhận mật khẩu mới",
+                confirmPlaceholder: "Nhập lại mật khẩu mới",
+                requirements: {
+                    title: "YÊU CẦU MẬT KHẨU",
+                    length: "Độ dài tối thiểu 8 ký tự",
+                    uppercase: "Chứa ít nhất một chữ viết hoa (A-Z)",
+                    special: "Chứa ít nhất một số (0-9) hoặc ký tự đặc biệt (!@#...)"
+                },
+                update: "Cập nhật mật khẩu",
+                success: "Cập nhật mật khẩu thành công!"
+            }
+        },
+        cart: {
+            orderSummary: "Tóm tắt đơn hàng",
+            subtotal: "Tạm tính",
+            shippingFee: "Phí vận chuyển",
+            voucherDiscount: "Giảm giá Voucher",
+            totalPayment: "Tổng thanh toán",
+            vatIncluded: "(Đã bao gồm VAT)",
+            voucherPlaceholder: "Mã giảm giá",
+            apply: "Áp dụng",
+            checkoutNow: "MUA NGAY",
+            yourCart: "Giỏ hàng của bạn",
+            emptyCart: "Giỏ hàng của bạn đang trống",
+            emptyCartDesc: "Chưa có sản phẩm nào trong giỏ hàng. Hãy dạo một vòng cửa hàng và chọn cho mình những sản phẩm ưng ý nhất nhé!",
+            continueShopping: "Tiếp tục mua sắm",
+            selectAll: "Chọn tất cả",
+            items: "sản phẩm",
+            delete: "Xóa",
+            soldBy: "Bán bởi",
+            paymentMethods: "Phương thức thanh toán",
+            cod: "Tiền mặt khi nhận hàng (COD)",
+            codDesc: "Thanh toán khi bạn nhận được hàng",
+            ewallet: "Quét mã QR / Ví điện tử",
+            ewalletDesc: "MoMo, VNPay, ZaloPay, ShopeePay"
         }
     },
     en: {
         nav: {
             home: "Home",
+            products: "Products",
             cameras: "Cameras",
             lenses: "Lenses",
             accessories: "Accessories",
             news: "News",
             search: "Search...",
+            // Tooltips
+            toggle_theme: "Toggle Theme",
+            change_language: "Change Language",
+            search_title: "Search",
+            account: "Account",
+            cart: "Cart",
+            close: "Close"
+        },
+        home: {
+            hero_badge: "LATEST PRODUCT",
+            hero_title: "Sony Alpha A7 V",
+            hero_desc: "Pinnacle of AI autofocus technology and next-gen full-frame sensor. Experience professional photography power like never before.",
+            hero_buy: "Buy Now",
+            hero_view: "View Details",
+            cat_title: "Product Categories",
+            cat_view_all: "View all categories",
+            cat_mirrorless: "MIRRORLESS",
+            cat_dslr: "DSLR",
+            cat_lens: "LENSES",
+            cat_accessories: "ACCESSORIES",
+            cat_all: "ALL",
+            featured_title: "Featured Products",
+            featured_sale: "Sale",
+            featured_sold_out: "Sold Out",
+            featured_reviews: "reviews",
+        },
+        products: {
+            filter_brand: "Brands",
+            filter_price: "Price Range",
+            filter_resolution: "Resolution",
+            filter_condition: "Condition",
+            condition_new: "Brand New",
+            condition_used: "Used",
+            found: "Found",
+            results: "results",
+            sort_by: "Sort by",
+            sort_newest: "Newest",
+            sort_price_asc: "Price: Low to High",
+            sort_price_desc: "Price: High to Low",
         },
         hero: {
             newArrival: "New Arrival",
@@ -274,10 +555,8 @@ export const dictionaries = {
             back_login: "Back to Login",
             otp_title: "Verify OTP Code",
             otp_desc: "Please enter the 6-digit code sent to your email.",
-            verify: "Verify",
-            resend: "Resend",
-            verify: "Verify",
-            resend: "Resend",
+
+
             not_received: "Didn't receive code?",
             required: "This field is required",
             nameTooShort: "Name must be at least 2 characters",
@@ -330,6 +609,206 @@ export const dictionaries = {
             privacy_4_li2: "Request correction of inaccurate information",
             privacy_4_li3: "Request permanent account deletion",
             privacy_btn: "Confirm"
+        },
+        productDetail: {
+            // Product Info
+            reviews: "reviews",
+            addToCartSuccess: "Added to cart successfully!",
+            addToCartTitle: "Add to cart now",
+            inStock: "In Stock (Ready to ship)",
+            selectConfig: "Select Configuration:",
+            bodyOnly: "Body Only",
+            bodyDesc: "Body only, no lens included",
+            kitLens: "Kit 28-70mm f/3.5-5.6",
+            kitDesc: "Includes basic kit lens",
+            buyNow: "Buy Now",
+            deliveryDesc: "Home delivery or store pickup",
+
+            // Tabs
+            specs: "Specifications",
+            description: "Description",
+            customerReviews: "Customer Reviews",
+            updatingDesc: "Updating product description...",
+            viewAllReviews: "View all reviews...",
+
+            // Gallery
+            newArrival: "New Arrival",
+            off: "Off",
+
+            // Service Policies
+            genuineWarranty: "GENUINE WARRANTY",
+            warrantyDesc: "24 months nationwide",
+            freeReturn: "FREE RETURNS",
+            returnDesc: "30 days manufacturer defect",
+            freeShipping: "FREE SHIPPING",
+            shippingDesc: "Orders over 5M",
+            installment: "0% INSTALLMENT",
+            installmentDesc: "Via credit card",
+
+            // Similar Products
+            similarProducts: "Similar Products",
+
+            // Specs Table
+            detailedSpecs: "Detailed Specifications",
+            sensor: "Sensor",
+            processor: "Image Processor",
+            iso: "ISO",
+            focusPoints: "Focus Points",
+            video: "Video Recording",
+            screen: "Screen",
+            viewfinder: "Viewfinder",
+            battery: "Battery",
+            viewFullSpecs: "View full specs",
+
+            // Featured Reviews
+            featuredReviews: "Featured Reviews",
+            collapse: "Collapse",
+            viewAll: "View All",
+        },
+        checkout: {
+            title: "Checkout",
+            shippingInfo: "Shipping Information",
+            fullName: "Full Name",
+            fullNamePlaceholder: "Enter your full name",
+            phone: "Phone Number",
+            phonePlaceholder: "Enter phone number",
+            email: "Email Address (Optional)",
+            emailPlaceholder: "Enter email for e-invoice",
+            address: "Shipping Address",
+            addressPlaceholder: "House number, street name",
+            city: "Province / City",
+            selectCity: "Select Province/City",
+            district: "District",
+            selectDistrict: "Select District",
+            note: "Note (Optional)",
+            notePlaceholder: "Ex: Deliver during office hours",
+            paymentMethod: "Payment Method",
+            cod: "Cash on Delivery (COD)",
+            codDesc: "Pay cash upon delivery",
+            banking: "Bank Transfer",
+            bankingDesc: "Scan QR code via banking app",
+            card: "Credit / Debit Card",
+            cardDesc: "Visa, Mastercard, JCB",
+            ewallet: "E-Wallet",
+            ewalletDesc: "Momo, VNPay, ZaloPay",
+            orderSummary: "Order Summary",
+            items: "items",
+            tempCalc: "Subtotal",
+            shippingFee: "Shipping Fee",
+            free: "Free",
+            vat: "VAT (8%)",
+            vatIncluded: "Included",
+            total: "Total",
+            vatIncludedNote: "(VAT Included)",
+            confirmOrder: "Confirm Order",
+            secureInfo: "Your information is securely protected",
+            quantity: "Quantity"
+        },
+        profile: {
+            personalInfo: "Personal Information",
+            total: "Total",
+            tabs: {
+                all: "All",
+                pending: "Pending",
+                shipping: "Shipping",
+                completed: "Completed",
+                cancelled: "Cancelled"
+            },
+            status: {
+                pending: "PENDING",
+                shipping: "SHIPPING",
+                completed: "COMPLETED",
+                cancelled: "CANCELLED"
+            },
+            actions: {
+                cancel: "Cancel Order",
+                pay: "Pay Now",
+                received: "Order Received",
+                track: "Track Order",
+                return: "Return/Refund",
+                review: "Review",
+                buyAgain: "Buy Again"
+            },
+            edit: {
+                title: "Personal Information",
+                fullName: "Full Name",
+                email: "Email",
+                phone: "Phone Number",
+                dob: "Date of Birth",
+                gender: "Gender",
+                genderOptions: {
+                    male: "Male",
+                    female: "Female",
+                    other: "Other"
+                },
+                save: "Save Changes",
+                saved: "Changes saved!"
+            },
+            settings: {
+                title: "Personal Profile",
+                menu: {
+                    info: {
+                        title: "Personal Information",
+                        desc: "Edit name, email, phone"
+                    },
+                    address: {
+                        title: "Address Book",
+                        desc: "Manage shipping addresses"
+                    },
+                    password: {
+                        title: "Change Password",
+                        desc: "Account security"
+                    },
+                    payment: {
+                        title: "Payment Methods",
+                        desc: "Credit cards, e-wallets"
+                    }
+                },
+                logout: "Sign Out"
+            },
+            password: {
+                title: "Change Password",
+                desc: "For account security, please do not share your password with others.",
+                current: "Current Password",
+                currentPlaceholder: "Enter current password",
+                forgot: "Forgot password?",
+                new: "New Password",
+                newPlaceholder: "Enter new password",
+                confirm: "Confirm New Password",
+                confirmPlaceholder: "Re-enter new password",
+                requirements: {
+                    title: "PASSWORD REQUIREMENTS",
+                    length: "Minimum 8 characters length",
+                    uppercase: "At least one uppercase letter (A-Z)",
+                    special: "At least one number (0-9) or special char (!@#...)"
+                },
+                update: "Update Password",
+                success: "Password updated successfully!"
+            }
+        },
+        cart: {
+            orderSummary: "Order Summary",
+            subtotal: "Subtotal",
+            shippingFee: "Shipping Fee",
+            voucherDiscount: "Voucher Discount",
+            totalPayment: "Total Payment",
+            vatIncluded: "(VAT Included)",
+            voucherPlaceholder: "Voucher Code",
+            apply: "Apply",
+            checkoutNow: "CHECKOUT NOW",
+            yourCart: "Your Cart",
+            emptyCart: "Your cart is empty",
+            emptyCartDesc: "There are no products in your cart. Take a look around the shop and choose your favorite products!",
+            continueShopping: "Continue Shopping",
+            selectAll: "Select All",
+            items: "items",
+            delete: "Delete",
+            soldBy: "Sold by",
+            paymentMethods: "Payment Methods",
+            cod: "Cash on Delivery (COD)",
+            codDesc: "Pay when you receive the goods",
+            ewallet: "QR Scan / E-Wallet",
+            ewalletDesc: "MoMo, VNPay, ZaloPay, ShopeePay"
         }
     }
 };

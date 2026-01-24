@@ -1,18 +1,17 @@
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { useLanguage } from "../../context/LanguageContext";
+import Logo from "../common/Logo";
 
 export default function Footer() {
     const { t } = useLanguage();
 
     return (
-        <footer className="bg-white dark:bg-gray-950 pt-16 pb-12 px-4 lg:px-8 border-t border-gray-100 dark:border-gray-800">
+        <footer id="main-footer" className="bg-white dark:bg-gray-950 pt-16 pb-12 px-4 lg:px-8 border-t border-gray-100 dark:border-gray-800">
             <div className="max-w-[1440px] mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {/* Logo & Info */}
                     <div className="flex flex-col gap-6">
-                        <h3 className="text-2xl font-black tracking-tighter">
-                            CameraHub.
-                        </h3>
+                        <Logo textClassName="text-xl" />
                         <p className="text-gray-500 dark:text-gray-400 leading-relaxed">
                             {t("footer.desc")}
                         </p>
