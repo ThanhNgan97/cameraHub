@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash, FaUser } from 'react-icons/fa';
 import { MdEmail, MdLock, MdCached } from 'react-icons/md';
 import { useLanguage } from '../../context/LanguageContext';
-
-
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const navigate = useNavigate();
+    const { register } = useAuth();
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -17,6 +17,7 @@ export default function Register() {
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { t } = useLanguage();
 
     const validate = () => {
@@ -54,18 +55,27 @@ export default function Register() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validate()) {
-            // Handle registration logic here
-            console.log('Form submitted:', formData);
-            // Navigate to User Home
-            navigate('/user/home');
-            // We should also close the modal potentially, but since we are navigating away, 
-            // the modal usually lives in context or parent. 
-            // If the modal is in Navbar (which is present in Home too), we might need to close it.
-            // But navigation usually unmounts or changes context. 
-            // Let's assume navigation is enough for now, or the user will ask to close modal.
+            setLoading(true);
+            try {
+                await register({
+                    full_name: formData.fullName,
+                    email: formData.email,
+                    password: formData.password,
+                    // Backend might check phone too, but this form doesn't have it yet.
+                    // Assuming phone is optional or handled later.
+                });
+                navigate('/user/home');
+            } catch (err) {
+                setErrors(prev => ({
+                    ...prev,
+                    form: err.response?.data?.message || 'Registration failed'
+                }));
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -76,16 +86,18 @@ export default function Register() {
             [name]: value
         }));
         // Clear error when user types
-        if (errors[name]) {
+        if (errors[name] || errors.form) {
             setErrors(prev => ({
                 ...prev,
-                [name]: ''
+                [name]: '',
+                form: ''
             }));
         }
     };
 
     return (
         <form className="space-y-4" onSubmit={handleSubmit}>
+            {errors.form && <div className="text-red-500 text-sm text-center font-bold">{errors.form}</div>}
             {/* Full Name */}
             <div className="space-y-1.5 animate-slide-down">
                 <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">
@@ -176,8 +188,8 @@ export default function Register() {
                 {errors.confirmPassword && <p className="text-red-500 text-xs ml-1">{errors.confirmPassword}</p>}
             </div>
 
-            <button className="w-full h-12 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl shadow-lg shadow-orange-500/30 hover:translate-y-[-2px] hover:shadow-orange-500/40 active:translate-y-[0px] transition-all">
-                {t('auth.register')}
+            <button disabled={loading} className="w-full h-12 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl shadow-lg shadow-orange-500/30 hover:translate-y-[-2px] hover:shadow-orange-500/40 active:translate-y-[0px] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                {loading ? 'Registering...' : t('auth.register')}
             </button>
         </form>
     );

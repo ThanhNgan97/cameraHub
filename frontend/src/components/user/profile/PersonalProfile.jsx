@@ -5,9 +5,11 @@ import { FaUserEdit, FaMapMarkerAlt, FaKey, FaCreditCard, FaSignOutAlt, FaCog, F
 import NavbarActions from '../../common/NavbarActions';
 import Footer from '../../landing/Footer';
 import { useLanguage } from '../../../context/LanguageContext';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function PersonalProfile() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
     const { t } = useLanguage();
     const fileInputRef = useRef(null);
     const [avatar, setAvatar] = useState("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80");
@@ -22,6 +24,11 @@ export default function PersonalProfile() {
             const imageUrl = URL.createObjectURL(file);
             setAvatar(imageUrl);
         }
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
     };
 
     const menuItems = [
@@ -129,7 +136,10 @@ export default function PersonalProfile() {
                 </div>
 
                 {/* Logout */}
-                <button className="w-full bg-red-50 dark:bg-red-900/10 text-red-500 font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors">
+                <button
+                    onClick={handleLogout}
+                    className="w-full bg-red-50 dark:bg-red-900/10 text-red-500 font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors"
+                >
                     <FaSignOutAlt />
                     <span>{t('profile.settings.logout')}</span>
                 </button>

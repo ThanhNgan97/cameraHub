@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
-import AuthModal from '../auth/AuthModal';
+
 import Logo from '../common/Logo';
 
-export default function Navbar() {
+export default function Navbar({ onOpenAuthModal }) {
     const { theme, toggleTheme } = useTheme();
     const { language, setLanguage, t } = useLanguage();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     const toggleLanguage = () => {
         setLanguage(prev => prev === 'vi' ? 'en' : 'vi');
@@ -57,12 +56,6 @@ export default function Navbar() {
                         >
                             {t('nav.lenses')}
                         </button>
-                        {/* <button
-                            className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
-                            onClick={() => scrollToSection('special-offers')}
-                        >
-                            {t('nav.accessories')}
-                        </button> */}
                         <button
                             className="text-base font-medium hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
                             onClick={() => scrollToSection('newsletter')}
@@ -114,19 +107,18 @@ export default function Navbar() {
                             </button>
                         )}
                         <button
-                            onClick={() => setIsAuthModalOpen(true)}
+                            onClick={onOpenAuthModal}
                             className="hidden lg:block material-symbols-outlined text-2xl text-text-light dark:text-text-dark p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
                             person
                         </button>
-                        <button className="hidden lg:block material-symbols-outlined text-2xl text-text-light dark:text-text-dark p-2 -mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <button className="hidden lg:block material-symbols-outlined text-2xl text-text-light dark:text-text-dark p-2 -mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative">
                             shopping_cart
+                            <span className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
                         </button>
                     </div>
                 </div>
             </div>
-
-            <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
         </>
     );
 }

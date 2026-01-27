@@ -1,7 +1,7 @@
 import { useLanguage } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Hero() {
+export default function Hero({ onOpenAuthModal }) {
     const { t } = useLanguage();
     const navigate = useNavigate();
 
@@ -20,7 +20,10 @@ export default function Hero() {
                         {t('hero.description')}
                     </p>
                     <div className="flex gap-4 pt-2">
-                        <button className="flex items-center justify-center h-14 px-8 bg-primary text-white text-base font-bold tracking-wide uppercase rounded-lg shadow-lg shadow-primary/30 hover:bg-primary/90 hover:-translate-y-1 transition-all">
+                        <button
+                            onClick={onOpenAuthModal}
+                            className="flex items-center justify-center h-14 px-8 bg-primary text-white text-base font-bold tracking-wide uppercase rounded-lg shadow-lg shadow-primary/30 hover:bg-primary/90 hover:-translate-y-1 transition-all"
+                        >
                             {t('hero.explore')}
                         </button>
                         <button
