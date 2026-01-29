@@ -158,8 +158,8 @@ const forgotPassword = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // 1. TẠO MÃ 6 SỐ
-        const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
+        // 1. TẠO MÃ 8 SỐ
+        const resetToken = Math.floor(10000000 + Math.random() * 90000000).toString();
 
         // 2. HASH TOKEN ĐỂ LƯU DB
         const hashedToken = crypto
@@ -167,7 +167,7 @@ const forgotPassword = async (req, res) => {
             .update(resetToken)
             .digest('hex');
 
-        const expireTime = new Date(Date.now() + 2 * 60 * 1000); // 2 phút
+        const expireTime = new Date(Date.now() + 5 * 60 * 1000); // 5 phút
 
         await prisma.users.update({
             where: { id: user.id },
@@ -452,12 +452,65 @@ const githubCallback = async (req, res) => {
 };
 
 
+const changePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        const userId = req.user.id; // From authMiddleware
+
+        console.log('Change Password Attempt:', { userId, currentPassword: '***' });
+
+        if (!currentPassword || !newPassword) {
+            console.log('Missing parameters');
+            return res.status(400).json({ message: 'Current and new password are required' });
+        }
+
+        const user = await prisma.users.findUnique({
+            where: { id: BigInt(userId) }
+        });
+
+        if (!user) {
+            console.log('User not found in DB');
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Verify current password
+        // Check if user has a password set (social login users might not have a valid hash)
+        if (user.password_hash === 'GOOGLE_LOGIN' || user.password_hash === 'GITHUB_LOGIN') {
+            console.log('User uses social login, cannot change password this way');
+            return res.status(400).json({ message: 'Social login accounts cannot change password directly. Please use "Forgot Password" to set a new one.' });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password_hash);
+        if (!isMatch) {
+            console.log('Incorrect current password');
+            return res.status(400).json({ message: 'Incorrect current password' });
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10);
+        const password_hash = await bcrypt.hash(newPassword, salt);
+
+        await prisma.users.update({
+            where: { id: BigInt(userId) },
+            data: { password_hash }
+        });
+
+        console.log('Password updated successfully');
+        res.json({ message: 'Password changed successfully' });
+
+    } catch (error) {
+        console.error('Change password error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 module.exports = {
     register,
     login,
     getMe,
     forgotPassword,
     resetPassword,
+    changePassword,
     googleLogin,
     githubLogin,
     githubCallback

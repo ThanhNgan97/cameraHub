@@ -8,6 +8,7 @@ const {
     googleLogin,
     forgotPassword,
     resetPassword,
+    changePassword,
     githubLogin,
     githubCallback
 } = require('../controllers/auth.controller');
@@ -18,6 +19,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
+router.post('/change-password', authMiddleware, changePassword);
 
 // Google
 router.post('/google-login', googleLogin);

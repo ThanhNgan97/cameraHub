@@ -376,7 +376,7 @@ export const dictionaries = {
                 confirmPlaceholder: "Nhập lại mật khẩu mới",
                 requirements: {
                     title: "YÊU CẦU MẬT KHẨU",
-                    length: "Độ dài tối thiểu 8 ký tự",
+                    length: "Độ dài tối thiểu 6 ký tự",
                     uppercase: "Chứa ít nhất một chữ viết hoa (A-Z)",
                     special: "Chứa ít nhất một số (0-9) hoặc ký tự đặc biệt (!@#...)"
                 },

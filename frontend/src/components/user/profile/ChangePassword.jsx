@@ -6,6 +6,9 @@ import { MdSecurity } from 'react-icons/md';
 import NavbarActions from '../../common/NavbarActions';
 import Footer from '../../landing/Footer';
 import { useLanguage } from '../../../context/LanguageContext';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChangePassword() {
     const navigate = useNavigate();
@@ -36,18 +39,66 @@ export default function ChangePassword() {
         }));
     };
 
-    const handleSubmit = () => {
-        alert(t('profile.password.success'));
-        navigate(-1);
+
+
+    const handleSubmit = async () => {
+        // Validation
+        if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
+            toast.error(t('profile.password.error.empty'));
+            return;
+        }
+
+        if (formData.newPassword !== formData.confirmPassword) {
+            toast.error(t('profile.password.error.mismatch'));
+            return;
+        }
+
+        if (formData.newPassword.length < 6 || !/[A-Z]/.test(formData.newPassword) || !/[0-9!@#...]/.test(formData.newPassword)) {
+            toast.error('Mật khẩu chưa đạt yêu cầu bảo mật (6 ký tự, 1 chữ hoa, 1 số/ký tự đặc biệt)');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(
+                'http://localhost:3000/api/auth/change-password',
+                {
+                    currentPassword: formData.currentPassword,
+                    newPassword: formData.newPassword
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            toast.success('Đổi mật khẩu thành công');
+            setFormData({
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            });
+
+            setTimeout(() => {
+                navigate(-1);
+            }, 2000);
+
+        } catch (error) {
+            console.error(error);
+            const msg = error.response?.data?.message || 'Đổi mật khẩu thất bại';
+            toast.error(msg);
+        }
     };
 
     // Validation checks
-    const hasMinLength = formData.newPassword.length >= 8;
+    const hasMinLength = formData.newPassword.length >= 6;
     const hasUpperCase = /[A-Z]/.test(formData.newPassword);
     const hasNumberOrSpecial = /[0-9!@#...]/.test(formData.newPassword);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[#0f1115] transition-colors duration-300">
+            <ToastContainer position="top-right" autoClose={3000} />
             {/* Navbar */}
             <div className="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
                 <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-20 flex items-center justify-between">
