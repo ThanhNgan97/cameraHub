@@ -5,9 +5,11 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const { isAdmin } = require('../middlewares/role.middleware');
 
 // Routes
-router.get('/', authMiddleware, isAdmin, userController.getAllUsers); // Admin only
-router.get('/:id', authMiddleware, userController.getUserById); // Authenticated users
-router.put('/:id', authMiddleware, userController.updateUser); // Authenticated users (checks in controller)
-router.delete('/:id', authMiddleware, isAdmin, userController.deleteUser); // Admin only
+router.get('/', authMiddleware, isAdmin, userController.getAllUsers); 
+// Product search (public) - MUST come before /:id
+router.get('/products/search', userController.searchProducts);
+
+router.get('/:id', authMiddleware, userController.getUserById); 
+router.delete('/:id', authMiddleware, isAdmin, userController.deleteUser); 
 
 module.exports = router;

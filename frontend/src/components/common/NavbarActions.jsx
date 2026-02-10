@@ -1,18 +1,49 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
 import AuthModal from '../auth/AuthModal';
 import Logo from './Logo';
 
-import { useNavigate } from 'react-router-dom';
+
 
 export default function NavbarActions({ className = "" }) {
     const { theme, toggleTheme } = useTheme();
     const { language, setLanguage, t } = useLanguage();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    // Initialize state from URL
+    const [searchParams] = useSearchParams();
+    const currentQuery = searchParams.get('q') || '';
+
+    const [isSearchOpen, setIsSearchOpen] = useState(!!currentQuery);
+    const [searchQuery, setSearchQuery] = useState(currentQuery);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Loop sync: Update local state when URL changes
+    useEffect(() => {
+        const query = searchParams.get('q');
+        if (query) {
+            setSearchQuery(query);
+            setIsSearchOpen(true);
+        } else {
+            // Only close if we are NOT on search page (processed by close button) 
+            // OR if we navigated away to a non-search page.
+            if (!location.search.includes('q=')) {
+                setSearchQuery('');
+                setIsSearchOpen(false);
+            }
+        }
+    }, [searchParams, location.search]);
+
+    const handleSearch = (e) => {
+        if (e.key === 'Enter') {
+            if (searchQuery.trim()) {
+                navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+            }
+        }
+    };
 
     const toggleLanguage = () => {
         setLanguage(prev => prev === 'vi' ? 'en' : 'vi');
@@ -73,9 +104,23 @@ export default function NavbarActions({ className = "" }) {
                             placeholder={t('nav.search')}
                             className="bg-transparent border-none outline-none text-sm w-32 lg:w-48 text-text-light dark:text-text-dark placeholder-gray-500"
                             autoFocus
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={handleSearch}
                         />
                         <button
-                            onClick={() => setIsSearchOpen(false)}
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                // Clear search query from URL (if on search page) or just close if not
+                                if (location.pathname === '/search') {
+                                    navigate(location.pathname); // clear query param
+                                } else {
+                                    setIsSearchOpen(false);
+                                    setSearchQuery('');
+                                }
+                            }}
                             className="material-symbols-outlined text-xl text-gray-500 hover:text-primary ml-2 cursor-pointer"
                             title={t('nav.close')}
                         >

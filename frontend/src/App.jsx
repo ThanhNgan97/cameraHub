@@ -15,6 +15,7 @@ import { AuthProvider } from "./context/AuthContext";
 
 import ResetPasswordPage from "./components/auth/ResetPasswordPage";
 import OAuthSuccess from "./components/auth/OAuthSuccess";
+import SearchResults from "./components/user/SearchResults";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/oauth-success" element={<OAuthSuccess />} />
           <Route path="/video" element={<VideoPage />} />

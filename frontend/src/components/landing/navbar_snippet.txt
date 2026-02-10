@@ -1,0 +1,23 @@
+import { useNavigate } from 'react-router-dom';
+
+// ... inside component
+
+const navigate = useNavigate();
+const [searchQuery, setSearchQuery] = useState('');
+
+const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        setIsSearchOpen(false);
+    }
+};
+
+// ... inside render
+// Wrap input in form or add onKeyDown
+<input 
+// ...
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
+/>

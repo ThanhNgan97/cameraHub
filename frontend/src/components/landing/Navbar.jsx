@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -8,6 +9,18 @@ export default function Navbar({ onOpenAuthModal }) {
     const { theme, toggleTheme } = useTheme();
     const { language, setLanguage, t } = useLanguage();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+        if (e.key === 'Enter') {
+            if (searchQuery.trim()) {
+                navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+                setIsSearchOpen(false);
+                setSearchQuery('');
+            }
+        }
+    };
 
     const toggleLanguage = () => {
         setLanguage(prev => prev === 'vi' ? 'en' : 'vi');
@@ -90,6 +103,9 @@ export default function Navbar({ onOpenAuthModal }) {
                                     placeholder={t('nav.search')}
                                     className="bg-transparent border-none outline-none text-sm w-32 lg:w-48 text-text-light dark:text-text-dark placeholder-gray-500"
                                     autoFocus
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyDown={handleSearch}
                                 />
                                 <button
                                     onClick={() => setIsSearchOpen(false)}
