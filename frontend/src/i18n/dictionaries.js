@@ -227,6 +227,7 @@ export const dictionaries = {
             description: "Mô tả sản phẩm",
             customerReviews: "Đánh giá từ khách hàng",
             updatingDesc: "Đang cập nhật mô tả sản phẩm...",
+            specsUpdating: "Thông số kỹ thuật đang được cập nhật...",
             viewAllReviews: "Xem tất cả đánh giá...",
 
             // Gallery
@@ -304,6 +305,9 @@ export const dictionaries = {
         },
         profile: {
             personalInfo: "Thông tin cá nhân",
+            editInfo: "Chỉnh sửa thông tin",
+            user: "Người dùng",
+            defaultName: "Người dùng",
             total: "Thành tiền",
             tabs: {
                 all: "Tất cả",
@@ -633,6 +637,7 @@ export const dictionaries = {
             description: "Description",
             customerReviews: "Customer Reviews",
             updatingDesc: "Updating product description...",
+            specsUpdating: "Technical specifications are being updated...",
             viewAllReviews: "View all reviews...",
 
             // Gallery
@@ -789,6 +794,17 @@ export const dictionaries = {
                 update: "Update Password",
                 success: "Password updated successfully!"
             }
+        },
+        profile: {
+            personalInfo: "Thông tin cá nhân",
+            editInfo: "Edit Profile",
+            user: "Người dùng",
+            defaultName: "Người dùng",
+            changePassword: "Đổi mật khẩu",
+            myOrders: "Đơn hàng của tôi",
+            addresses: "Sổ địa chỉ",
+            paymentMethods: "Phương thức thanh toán",
+            logout: "Đăng xuất"
         },
         cart: {
             orderSummary: "Order Summary",

@@ -6,11 +6,7 @@ export default function ProductGallery({ product }) {
     const [activeImage, setActiveImage] = useState(0);
     const { t } = useLanguage();
 
-    const thumbnails = [
-        product.image,
-        "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop", // Placeholder 1
-        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=500&auto=format&fit=crop", // Placeholder 2
-    ];
+    const thumbnails = product.images && product.images.length > 0 ? product.images : [product.image];
 
     return (
         <div className="space-y-4">

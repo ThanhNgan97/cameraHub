@@ -18,6 +18,7 @@ export default function ProductDetail() {
     // Find product based on ID
     useEffect(() => {
         const found = MOCK_PRODUCTS.find(p => p.id === parseInt(id));
+        console.log('ProductDetail - Found product ID:', id, '| Has specs:', !!found?.specs);
         if (found) {
             setProduct(found);
         }
@@ -52,7 +53,7 @@ export default function ProductDetail() {
                 <ServicePolicies />
 
                 {/* Tabs & Content */}
-                <ProductTabs />
+                <ProductTabs product={product} />
 
                 {/* Similar Products */}
                 <SimilarProducts product={product} />

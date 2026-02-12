@@ -1,25 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaStar, FaCartPlus, FaCheck } from 'react-icons/fa';
 import { useCart } from '../../../context/CartContext';
 import { useLanguage } from '../../../context/LanguageContext';
+import { MOCK_PRODUCTS } from '../../../data/mockProducts';
 
 export default function ProductInfo({ product }) {
-    const [selectedConfig, setSelectedConfig] = useState('body');
+    const [selectedConfig, setSelectedConfig] = useState('base'); // 'base' or 'kit'
     const [isAdded, setIsAdded] = useState(false);
     const { addToCart, buyNow } = useCart();
     const { t, language } = useLanguage();
+
+    const navigate = useNavigate();
+
+    // 1. Dynamic Recommendation (Fallback)
+    const recommendation = useMemo(() => {
+        if (!product.brand || product.kit) return null; // Skip if explicit kit exists
+
+        const targetCategory = product.category === 'camera' ? 'lens' : 'camera';
+        return MOCK_PRODUCTS.find(p =>
+            p.brand === product.brand &&
+            p.category === targetCategory &&
+            p.id !== product.id
+        );
+    }, [product]);
+
+    // 2. Resolve Kit Data (Explicit Kit > Dynamic Recommendation)
+    const kitData = useMemo(() => {
+        if (product.kit) {
+            return {
+                name: product.kit.name,
+                price: product.kit.price, // Explicit price from data
+                desc: t("productDetail.kitDesc") || "Bộ lens kit đi kèm"
+            };
+        }
+        if (recommendation) {
+            return {
+                name: `Bundle w/ ${recommendation.name}`,
+                price: product.price + recommendation.price,
+                desc: t("productDetail.bundleCameraDesc") || "Gợi ý mua kèm"
+            };
+        }
+        return null;
+    }, [product, recommendation, t]);
 
     const formatPrice = (price) => {
         return new Intl.NumberFormat(language === 'vi' ? 'vi-VN' : 'en-US', { style: 'currency', currency: 'VND' }).format(price);
     };
 
-    const navigate = useNavigate();
-
     const handleAddToCart = () => {
-        addToCart(product, selectedConfig);
+        let configName = 'Standard';
+        if (selectedConfig === 'base') {
+            configName = product.category === 'camera' ? 'Body Only' : (product.category === 'lens' ? 'Lens Only' : 'Standard');
+        } else if (selectedConfig === 'kit' && kitData) {
+            configName = kitData.name;
+        }
+
+        addToCart(product, configName);
         setIsAdded(true);
-        // Navigate after 1 second
         setTimeout(() => {
             setIsAdded(false);
             navigate('/user/cart');
@@ -28,16 +66,17 @@ export default function ProductInfo({ product }) {
 
     const handleQuickAdd = (e) => {
         e.stopPropagation();
-        addToCart(product, selectedConfig);
+        addToCart(product, selectedConfig === 'base' ? 'Body Only' : kitData?.name || 'Bundle');
         alert(t("productDetail.addToCartSuccess"));
     };
 
     const handleBuyNow = () => {
-        buyNow(product, selectedConfig);
+        buyNow(product, selectedConfig === 'base' ? 'Body Only' : kitData?.name || 'Bundle');
         navigate('/user/checkout');
     };
 
-    const currentPrice = selectedConfig === 'kit' ? product.price + 5000000 : product.price;
+    // Calculate display price
+    const currentPrice = selectedConfig === 'kit' && kitData ? kitData.price : product.price;
 
     return (
         <div className="flex flex-col">
@@ -59,7 +98,7 @@ export default function ProductInfo({ product }) {
                     <span className="text-3xl font-bold text-[#F59E0B]">
                         {formatPrice(currentPrice)}
                     </span>
-                    {product.originalPrice && (
+                    {product.originalPrice && selectedConfig === 'base' && (
                         <span className="text-lg text-gray-400 line-through decoration-gray-400/50">
                             {formatPrice(product.originalPrice)}
                         </span>
@@ -79,39 +118,45 @@ export default function ProductInfo({ product }) {
             <div className="mb-8">
                 <h3 className="font-bold text-gray-900 dark:text-white mb-3">{t("productDetail.selectConfig")}</h3>
                 <div className="space-y-3">
-                    {/* Option 1: Body Only */}
+                    {/* Option 1: Base (Body Only / Lens Only) */}
                     <label
-                        className={`relative flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedConfig === 'body' ? 'border-[#F59E0B] bg-[#FFF8ED] dark:bg-[#F59E0B]/10' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}
-                        onClick={() => setSelectedConfig('body')}
+                        className={`relative flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedConfig === 'base' ? 'border-[#F59E0B] bg-[#FFF8ED] dark:bg-[#F59E0B]/10' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}
+                        onClick={() => setSelectedConfig('base')}
                     >
                         <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedConfig === 'body' ? 'border-[#F59E0B]' : 'border-gray-300'}`}>
-                                {selectedConfig === 'body' && <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />}
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedConfig === 'base' ? 'border-[#F59E0B]' : 'border-gray-300'}`}>
+                                {selectedConfig === 'base' && <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />}
                             </div>
                             <div>
-                                <div className="font-bold text-gray-900 dark:text-white text-sm">Body Only</div>
-                                <div className="text-xs text-gray-500">{t("productDetail.bodyDesc")}</div>
+                                <div className="font-bold text-gray-900 dark:text-white text-sm">
+                                    {product.category === 'lens' ? 'Lens Only' : 'Body Only'}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                    {product.category === 'lens' ? (t("productDetail.lensOnlyDesc") || "Chỉ ống kính") : (t("productDetail.bodyDesc") || "Chỉ thân máy")}
+                                </div>
                             </div>
                         </div>
                         <span className="font-bold text-[#F59E0B] text-sm">{formatPrice(product.price)}</span>
                     </label>
 
-                    {/* Option 2: Kit Lens (Simulated) */}
-                    <label
-                        className={`relative flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedConfig === 'kit' ? 'border-[#F59E0B] bg-[#FFF8ED] dark:bg-[#F59E0B]/10' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}
-                        onClick={() => setSelectedConfig('kit')}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedConfig === 'kit' ? 'border-[#F59E0B]' : 'border-gray-300'}`}>
-                                {selectedConfig === 'kit' && <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />}
+                    {/* Option 2: Kit / Bundle */}
+                    {kitData && (
+                        <label
+                            className={`relative flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedConfig === 'kit' ? 'border-[#F59E0B] bg-[#FFF8ED] dark:bg-[#F59E0B]/10' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}
+                            onClick={() => setSelectedConfig('kit')}
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedConfig === 'kit' ? 'border-[#F59E0B]' : 'border-gray-300'}`}>
+                                    {selectedConfig === 'kit' && <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />}
+                                </div>
+                                <div>
+                                    <div className="font-bold text-gray-900 dark:text-white text-sm line-clamp-1">{kitData.name}</div>
+                                    <div className="text-xs text-gray-500">{kitData.desc}</div>
+                                </div>
                             </div>
-                            <div>
-                                <div className="font-bold text-gray-900 dark:text-white text-sm">Kit 28-70mm f/3.5-5.6</div>
-                                <div className="text-xs text-gray-500">{t("productDetail.kitDesc")}</div>
-                            </div>
-                        </div>
-                        <span className="font-bold text-gray-900 dark:text-white text-sm">{formatPrice(product.price + 5000000)}</span>
-                    </label>
+                            <span className="font-bold text-gray-900 dark:text-white text-sm whitespace-nowrap ml-2">{formatPrice(kitData.price)}</span>
+                        </label>
+                    )}
                 </div>
             </div>
 

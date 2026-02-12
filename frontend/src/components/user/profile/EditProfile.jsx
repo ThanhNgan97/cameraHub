@@ -1,22 +1,44 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
 import { FaCamera, FaEnvelope, FaPhone, FaCalendarAlt, FaCheckCircle } from 'react-icons/fa';
 import NavbarActions from '../../common/NavbarActions';
 import Footer from '../../landing/Footer';
 import { useLanguage } from '../../../context/LanguageContext';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function EditProfile() {
     const navigate = useNavigate();
     const { t } = useLanguage();
+    const { user, updateProfile, uploadAvatar } = useAuth();
+    const [loading, setLoading] = useState(false);
+
+    // Default values matching the image
+
     // Default values matching the image
     const [formData, setFormData] = useState({
-        fullName: 'Minh Nhật',
-        email: 'minhnhat@camerahub.vn',
-        phone: '0912 345 678',
-        dob: '1995-08-20',
+        fullName: '',
+        email: '',
+        phone: '',
+        dob: '',
         gender: 'male'
     });
+
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                fullName: user.full_name || '',
+                email: user.email || '',
+                phone: user.phone || '',
+                dob: user.dob ? new Date(user.dob).toISOString().split('T')[0] : '', // Format YYYY-MM-DD
+                gender: user.gender || 'male'
+            }));
+            if (user.avatar) {
+                setAvatar(user.avatar);
+            }
+        }
+    }, [user]);
 
     // Avatar state (reused logic for consistency)
     const fileInputRef = useRef(null);
@@ -26,11 +48,18 @@ export default function EditProfile() {
         fileInputRef.current.click();
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setAvatar(imageUrl);
+            try {
+                const imageUrl = URL.createObjectURL(file);
+                setAvatar(imageUrl);
+                await uploadAvatar(file);
+            } catch (error) {
+                console.error("Failed to upload avatar", error);
+                if (user?.avatar) setAvatar(user.avatar);
+                alert("Failed to update avatar");
+            }
         }
     };
 
@@ -42,9 +71,23 @@ export default function EditProfile() {
         }));
     };
 
-    const handleSubmit = () => {
-        alert(t('profile.edit.saved'));
-        navigate(-1);
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            await updateProfile({
+                full_name: formData.fullName,
+                phone: formData.phone,
+                dob: formData.dob,
+                gender: formData.gender
+            });
+            alert(t('profile.edit.saved'));
+            // navigate(-1); // navigate back or stay on page
+        } catch (error) {
+            console.error('Update profile error:', error);
+            alert(error.response?.data?.message || 'Failed to update profile');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -113,7 +156,9 @@ export default function EditProfile() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-[#F59E0B] transition-colors"
+                                    disabled={true}
+                                    readOnly={true}
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 focus:outline-none cursor-not-allowed"
                                 />
                             </div>
                         </div>
@@ -166,9 +211,10 @@ export default function EditProfile() {
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full mt-8 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/25 transition-all text-lg"
+                    disabled={loading}
+                    className={`w-full mt-8 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/25 transition-all text-lg ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                    {t('profile.edit.save')}
+                    {loading ? 'Saving...' : t('profile.edit.save')}
                 </button>
             </main>
 

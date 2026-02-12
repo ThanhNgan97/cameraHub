@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
 import AuthModal from '../auth/AuthModal';
 import Logo from './Logo';
 
@@ -10,6 +12,8 @@ import Logo from './Logo';
 export default function NavbarActions({ className = "" }) {
     const { theme, toggleTheme } = useTheme();
     const { language, setLanguage, t } = useLanguage();
+    const { user } = useAuth();
+    const { cartItems } = useCart();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     // Initialize state from URL
@@ -140,10 +144,20 @@ export default function NavbarActions({ className = "" }) {
                 {/* User Icon */}
                 <button
                     onClick={() => navigate('/user/profile')}
-                    className="material-symbols-outlined text-2xl text-text-light dark:text-text-dark p-2 rounded-full border border-transparent hover:border-[#F59E0B] hover:text-[#F59E0B] transition-all"
+                    className="flex items-center justify-center p-1 rounded-full border border-transparent hover:border-[#F59E0B] transition-all"
                     title={t('nav.account')}
                 >
-                    person
+                    {user?.avatar ? (
+                        <img
+                            src={user.avatar}
+                            alt="Avatar"
+                            className="w-8 h-8 rounded-full object-cover"
+                        />
+                    ) : (
+                        <span className="material-symbols-outlined text-2xl text-text-light dark:text-text-dark">
+                            person
+                        </span>
+                    )}
                 </button>
 
                 {/* Cart Icon */}
@@ -152,7 +166,14 @@ export default function NavbarActions({ className = "" }) {
                     className="material-symbols-outlined text-2xl text-text-light dark:text-text-dark p-2 rounded-full border border-transparent hover:border-[#F59E0B] hover:text-[#F59E0B] transition-all"
                     title={t('nav.cart')}
                 >
-                    shopping_cart
+                    <div className="relative">
+                        shopping_cart
+                        {cartItems.length > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-[#F97316] text-white text-[11px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white dark:border-gray-900">
+                                {cartItems.reduce((total, item) => total + item.quantity, 0)}
+                            </span>
+                        )}
+                    </div>
                 </button>
 
                 <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />

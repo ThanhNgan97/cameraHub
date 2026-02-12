@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from "react-icons/io";
 import { FaUserEdit, FaMapMarkerAlt, FaKey, FaCreditCard, FaSignOutAlt, FaCog, FaCamera } from 'react-icons/fa';
@@ -9,20 +9,36 @@ import { useAuth } from '../../../context/AuthContext';
 
 export default function PersonalProfile() {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { user, logout, uploadAvatar } = useAuth();
     const { t } = useLanguage();
     const fileInputRef = useRef(null);
     const [avatar, setAvatar] = useState("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80");
+
+    useEffect(() => {
+        if (user?.avatar) {
+            setAvatar(user.avatar);
+        }
+    }, [user]);
 
     const handleAvatarClick = () => {
         fileInputRef.current.click();
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setAvatar(imageUrl);
+            try {
+                // Optimistic update
+                const imageUrl = URL.createObjectURL(file);
+                setAvatar(imageUrl);
+
+                await uploadAvatar(file);
+            } catch (error) {
+                console.error("Failed to upload avatar", error);
+                // Revert if failed
+                if (user?.avatar) setAvatar(user.avatar);
+                alert("Failed to update avatar");
+            }
         }
     };
 
@@ -105,7 +121,10 @@ export default function PersonalProfile() {
                             onChange={handleFileChange}
                         />
                     </div>
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Minh Nhật</h2>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                        {user?.full_name || user?.fullName || user?.email?.split('@')[0] || t('profile.user')}
+                    </h2>
+                    <p className="text-gray-500 text-sm mb-2">{user?.email}</p>
                     {/* <div className="bg-orange-50 text-[#F59E0B] px-4 py-1.5 rounded-full text-sm font-bold border border-orange-100 flex items-center gap-2">
                         <span>👑</span>
                         <span>Thành viên Vàng</span>

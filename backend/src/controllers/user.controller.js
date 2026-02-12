@@ -192,7 +192,7 @@ const deleteUser = async (req, res) => {
 
 const searchProducts = async (req, res) => {
     try {
-        const { page = 1, limit = 10, search, category, brand, minPrice, maxPrice, sort } = req.query;
+        const { page = 1, limit = 10, search, category, brand, minPrice, maxPrice, sort, colors, resolutions, conditions } = req.query;
         const skip = (page - 1) * limit;
 
         const where = {
@@ -305,13 +305,87 @@ const searchProducts = async (req, res) => {
         if (category) {
             where.category = category;
         }
+
+        // Improved Brand Filter (Supporting multiple values)
         if (brand) {
-            where.brand = brand;
+            const brandList = Array.isArray(brand) ? brand : brand.split(',').map(b => b.trim()).filter(Boolean);
+            if (brandList.length > 0) {
+                // If brand filter is applied, it overrides or intersects with extracted brand from search text
+                // Here we simply enforce the filter
+                where.brand = { in: brandList };
+            }
+        }
+
+        // Color Filter
+        if (colors) {
+            const colorList = Array.isArray(colors) ? colors : colors.split(',').map(c => c.trim()).filter(Boolean);
+            if (colorList.length > 0) {
+                where.product_colors = {
+                    some: {
+                        color: { in: colorList }
+                    }
+                };
+            }
+        }
+
+        // Condition Filter
+        if (conditions) {
+            const conditionList = Array.isArray(conditions) ? conditions : conditions.split(',').filter(Boolean);
+            const mappedConditions = [];
+
+            conditionList.forEach(c => {
+                const lowerC = c.toLowerCase().trim();
+                // Map Vietnamese UI terms to DB enum values
+                if (lowerC === 'mới 100%' || lowerC === 'new') mappedConditions.push('new');
+                if (lowerC === 'đã qua sử dụng' || lowerC === 'used') mappedConditions.push('used');
+                if (lowerC === 'refurbished') mappedConditions.push('refurbished');
+            });
+
+            if (mappedConditions.length > 0) {
+                where.condition = { in: mappedConditions };
+            }
+        }
+
+        // Resolution Filter
+        if (resolutions) {
+            const resolutionList = Array.isArray(resolutions) ? resolutions : resolutions.split(',').filter(Boolean);
+            const resolutionConditions = [];
+
+            resolutionList.forEach(rangeStr => {
+                // Parse "10MP - 20MP"
+                const rangeMatch = rangeStr.match(/(\d+)\s*MP\s*-\s*(\d+)\s*MP/i);
+                if (rangeMatch) {
+                    resolutionConditions.push({
+                        resolution: {
+                            gte: parseInt(rangeMatch[1]),
+                            lte: parseInt(rangeMatch[2])
+                        }
+                    });
+                    return;
+                }
+                // Parse "60MP+"
+                const plusMatch = rangeStr.match(/(\d+)\s*MP\+/i);
+                if (plusMatch) {
+                    resolutionConditions.push({
+                        resolution: {
+                            gte: parseInt(plusMatch[1])
+                        }
+                    });
+                    return;
+                }
+            });
+
+            if (resolutionConditions.length > 0) {
+                // Use AND to combine with existing where clauses, but OR within resolutions
+                // e.g. (10-20) OR (30-40)
+                if (!where.AND) where.AND = [];
+                where.AND.push({ OR: resolutionConditions });
+            }
         }
 
         // Price range
         if (minPrice || maxPrice) {
-            where.price = {};
+            where.price = where.price || {};
             if (minPrice) where.price.gte = parseFloat(minPrice);
             if (maxPrice) where.price.lte = parseFloat(maxPrice);
         }
@@ -384,6 +458,7 @@ const searchProducts = async (req, res) => {
 
     } catch (error) {
         console.error('Search products error:', error);
+        try { require('fs').appendFileSync('error_log.txt', new Date().toISOString() + ' ' + error.stack + '\n'); } catch (e) { }
         res.status(500).json({ message: 'Internal server error' });
     }
 };

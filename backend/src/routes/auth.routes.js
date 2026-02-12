@@ -10,7 +10,9 @@ const {
     resetPassword,
     changePassword,
     githubLogin,
-    githubCallback
+    githubCallback,
+    updateProfile,
+    uploadAvatar
 } = require('../controllers/auth.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -30,5 +32,7 @@ router.get('/github/callback', githubCallback);
 
 // Me
 router.get('/me', authMiddleware, getMe);
+router.put('/me', authMiddleware, updateProfile);
+router.post('/me/avatar', authMiddleware, require('../middlewares/upload.middleware').single('avatar'), uploadAvatar);
 
 module.exports = router;

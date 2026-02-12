@@ -71,8 +71,20 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false);
     };
 
+    const updateProfile = async (userData) => {
+        const data = await authService.updateProfile(userData);
+        setUser(data.user);
+        return data;
+    };
+
+    const uploadAvatar = async (file) => {
+        const data = await authService.uploadAvatar(file);
+        setUser(data.user);
+        return data;
+    };
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, loading, login, googleLogin, loginWithToken, githubLogin, register, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, loading, login, googleLogin, loginWithToken, githubLogin, register, logout, updateProfile, uploadAvatar }}>
             {!loading && children}
         </AuthContext.Provider>
     );

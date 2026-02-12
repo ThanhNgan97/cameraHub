@@ -42,6 +42,22 @@ const authService = {
     resetPassword: async (token, newPassword) => {
         const response = await api.post('/auth/reset-password', { token, newPassword });
         return response.data;
+    },
+
+    updateProfile: async (userData) => {
+        const response = await api.put('/auth/me', userData);
+        return response.data;
+    },
+
+    uploadAvatar: async (file) => {
+        const formData = new FormData();
+        formData.append('avatar', file);
+        const response = await api.post('/auth/me/avatar', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
     }
 };
 

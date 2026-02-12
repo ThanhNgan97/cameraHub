@@ -6,6 +6,7 @@ import ProductPage from "./components/user/products/ProductPage";
 
 import ProductDetail from "./components/user/product_details/ProductDetail";
 import CartPage from "./components/user/cart/CartPage";
+import AddressSelection from "./components/user/checkout/AddressSelection";
 import CheckoutPage from "./components/user/checkout/CheckoutPage";
 import UserProfile from "./components/user/profile/UserProfile";
 import PersonalProfile from "./components/user/profile/PersonalProfile";
@@ -16,6 +17,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ResetPasswordPage from "./components/auth/ResetPasswordPage";
 import OAuthSuccess from "./components/auth/OAuthSuccess";
 import SearchResults from "./components/user/SearchResults";
+import TestProductSpecs from "./components/TestProductSpecs";
 
 function App() {
   return (
@@ -32,10 +34,12 @@ function App() {
           <Route path="/user/products/:id" element={<ProductDetail />} />
           <Route path="/user/cart" element={<CartPage />} />
           <Route path="/user/checkout" element={<CheckoutPage />} />
+          <Route path="/user/checkout/address" element={<AddressSelection />} />
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/profile/edit" element={<PersonalProfile />} />
           <Route path="/user/profile/info" element={<EditProfile />} />
           <Route path="/user/profile/password" element={<ChangePassword />} />
+          <Route path="/test-specs" element={<TestProductSpecs />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

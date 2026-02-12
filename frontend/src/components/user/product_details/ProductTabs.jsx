@@ -3,7 +3,7 @@ import SpecsTable from './SpecsTable';
 import FeaturedReviews from './FeaturedReviews';
 import { useLanguage } from '../../../context/LanguageContext';
 
-export default function ProductTabs() {
+export default function ProductTabs({ product }) {
     const [activeTab, setActiveTab] = useState('specs');
     const { t } = useLanguage();
 
@@ -31,7 +31,7 @@ export default function ProductTabs() {
             <div className="p-6 lg:p-8">
                 {activeTab === 'specs' && (
                     <div className="space-y-12">
-                        <SpecsTable />
+                        <SpecsTable product={product} />
                         <FeaturedReviews />
                     </div>
                 )}

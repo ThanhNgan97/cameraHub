@@ -145,6 +145,85 @@ const getMe = async (req, res) => {
     }
 };
 
+const updateProfile = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { full_name, phone, dob, gender } = req.body;
+
+        // Validate phone number if provided
+        if (phone) {
+            const { isValidPhoneNumber } = require('../utils/validation');
+            if (!isValidPhoneNumber(phone)) {
+                return res.status(400).json({ message: 'Phone number must be exactly 10 digits' });
+            }
+        }
+
+        // Check if phone is already used by another user
+        if (phone) {
+            const existingUser = await prisma.users.findFirst({
+                where: {
+                    phone: phone,
+                    NOT: { id: BigInt(userId) }
+                }
+            });
+
+            if (existingUser) {
+                return res.status(400).json({ message: 'Phone number is already in use' });
+            }
+        }
+
+        // Update user
+        const updatedUser = await prisma.users.update({
+            where: { id: BigInt(userId) },
+            data: {
+                full_name,
+                phone,
+                dob: dob ? new Date(dob) : undefined,
+                gender,
+            }
+        });
+
+        res.json({
+            message: 'Profile updated successfully',
+            user: serializeUser(updatedUser)
+        });
+
+    } catch (error) {
+        console.error('Update profile error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const uploadAvatar = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        const userId = req.user.id;
+        // Construct public URL. Assuming frontend runs on different port or proxy setup.
+        // For development, we'll return the relative path that frontend can prefix or absolute URL if BE_URL is known.
+        // Let's store relative path 'uploads/avatars/filename' and let frontend handle full URL or serving static.
+        // backend is serving /uploads
+        const avatarUrl = `${process.env.BACKEND_URL || 'http://localhost:3000'}/uploads/avatars/${req.file.filename}`;
+
+        const updatedUser = await prisma.users.update({
+            where: { id: BigInt(userId) },
+            data: {
+                avatar: avatarUrl
+            }
+        });
+
+        res.json({
+            message: 'Avatar uploaded successfully',
+            user: serializeUser(updatedUser)
+        });
+    } catch (error) {
+        console.error('Upload avatar error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 
 const forgotPassword = async (req, res) => {
     try {
@@ -513,5 +592,7 @@ module.exports = {
     changePassword,
     googleLogin,
     githubLogin,
-    githubCallback
+    githubCallback,
+    updateProfile,
+    uploadAvatar
 };
