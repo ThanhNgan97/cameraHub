@@ -1,36 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaPlus, FaCheck, FaPen } from 'react-icons/fa';
+import {FaPlus, FaTruck } from 'react-icons/fa';
 import NavbarActions from '../../common/NavbarActions';
-import { useLanguage } from '../../../context/LanguageContext';
 import addressService from '../../../services/addressService';
 import { useAuth } from '../../../context/AuthContext';
+import { vietnamLocations } from '../../../i18n/vietnam_locations';
 
 const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
     const [formData, setFormData] = useState({
         full_name: '',
         phone: '',
+        email: '',
         province: '',
         district: '',
-        ward: '',
         address_detail: '',
         is_default: false
     });
+    const [availableDistricts, setAvailableDistricts] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (initialData) {
-            setFormData(initialData);
+            setFormData({
+                ...initialData,
+                email: initialData.email || '',
+
+            });
+            const cityData = vietnamLocations.find(c => c.name === initialData.province);
+            setAvailableDistricts(cityData ? cityData.districts : []);
         } else {
             setFormData({
                 full_name: '',
                 phone: '',
+                email: '',
                 province: '',
                 district: '',
-                ward: '',
                 address_detail: '',
                 is_default: false
             });
+            setAvailableDistricts([]);
         }
     }, [initialData, isOpen]);
 
@@ -38,10 +46,21 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
+
+        if (name === 'province') {
+            const cityData = vietnamLocations.find(c => c.name === value);
+            setAvailableDistricts(cityData ? cityData.districts : []);
+            setFormData(prev => ({
+                ...prev,
+                province: value,
+                district: ''
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: type === 'checkbox' ? checked : value
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -59,37 +78,103 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-                <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white uppercase text-center">
-                    {initialData ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}
-                </h3>
+            <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+                <div className="flex items-center gap-2 mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
+                    <span className="text-[#F59E0B] text-xl"><FaTruck /></span>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                        Thông tin nhận hàng
+                    </h3>
+                </div>
+
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-3">
+                    {/* Row 1: Name and Phone */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">Họ và tên</label>
+                            <input
+                                type="text"
+                                name="full_name"
+                                placeholder="Nhập họ tên đầy đủ"
+                                value={formData.full_name}
+                                onChange={handleChange}
+                                required
+                                className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-[#F59E0B] transition-colors"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">Số điện thoại</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="Nhập số điện thoại"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                required
+                                className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-[#F59E0B] transition-colors"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Row 2: Email */}
+                    <div className="space-y-1">
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300">Địa chỉ email (Tùy chọn)</label>
                         <input
-                            type="text"
-                            name="full_name"
-                            placeholder="Họ và tên"
-                            value={formData.full_name}
+                            type="email"
+                            name="email"
+                            placeholder="Nhập email để nhận hóa đơn điện tử"
+                            value={formData.email}
                             onChange={handleChange}
-                            required
-                            className="w-full px-3 py-2 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-orange-500 outline-none transition-colors"
-                        />
-                        <input
-                            type="tel"
-                            name="phone"
-                            placeholder="Số điện thoại"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-3 py-2 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-orange-500 outline-none transition-colors"
+                            className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-[#F59E0B] transition-colors"
                         />
                     </div>
 
-                    <div className="space-y-3 pt-2">
-                        <input type="text" name="province" placeholder="Tỉnh/Thành phố" value={formData.province} onChange={handleChange} required className="w-full px-3 py-2 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-orange-500 outline-none" />
-                        <input type="text" name="district" placeholder="Quận/Huyện" value={formData.district} onChange={handleChange} required className="w-full px-3 py-2 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-orange-500 outline-none" />
-                        <input type="text" name="ward" placeholder="Phường/Xã" value={formData.ward} onChange={handleChange} required className="w-full px-3 py-2 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-orange-500 outline-none" />
-                        <input type="text" name="address_detail" placeholder="Địa chỉ cụ thể" value={formData.address_detail} onChange={handleChange} required className="w-full px-3 py-2 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-orange-500 outline-none" />
+                    {/* Row 3: Address Detail */}
+                    <div className="space-y-1">
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300">Địa chỉ nhận hàng</label>
+                        <input
+                            type="text"
+                            name="address_detail"
+                            placeholder="Số nhà, tên đường"
+                            value={formData.address_detail}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-[#F59E0B] transition-colors"
+                        />
+                    </div>
+
+                    {/* Row 4: Province and District */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">Tỉnh / Thành phố</label>
+                            <select
+                                name="province"
+                                value={formData.province}
+                                onChange={handleChange}
+                                required
+                                className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-[#F59E0B] transition-colors appearance-none"
+                            >
+                                <option value="" disabled>Chọn Tỉnh/Thành phố</option>
+                                {vietnamLocations.map(city => (
+                                    <option key={city.name} value={city.name}>{city.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">Quận / Huyện</label>
+                            <select
+                                name="district"
+                                value={formData.district}
+                                onChange={handleChange}
+                                required
+                                disabled={!formData.province}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-[#F59E0B] transition-colors appearance-none"
+                            >
+                                <option value="" disabled>Chọn Quận/Huyện</option>
+                                {availableDistricts.map(dist => (
+                                    <option key={dist} value={dist}>{dist}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="flex items-center pt-2">
@@ -130,7 +215,7 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
 
 export default function AddressSelection() {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, refreshUser } = useAuth();
     const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedId, setSelectedId] = useState(null);
@@ -166,6 +251,7 @@ export default function AddressSelection() {
         if (!selectedId) return;
         try {
             await addressService.setDefaultAddress(selectedId);
+            await refreshUser(); // Refresh user data to ensure checkout page has latest address
             navigate('/user/checkout');
         } catch (error) {
             console.error('Failed to confirm address', error);
@@ -174,10 +260,12 @@ export default function AddressSelection() {
 
     const handleSaveAddress = async (formData) => {
         let response;
+        const dataToSend = { ...formData, ward: formData.ward || '' };
+
         if (editingAddress) {
-            response = await addressService.updateAddress(editingAddress.id, formData);
+            response = await addressService.updateAddress(editingAddress.id, dataToSend);
         } else {
-            response = await addressService.addAddress(formData);
+            response = await addressService.addAddress(dataToSend);
         }
 
         if (response.success) {
@@ -207,14 +295,8 @@ export default function AddressSelection() {
 
             <main className="max-w-[1440px] mx-auto px-4 lg:px-8 py-8 lg:py-12">
                 <div className="max-w-3xl mx-auto">
-                    <div className="flex items-center mb-6">
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="mr-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
-                        >
-                            <FaArrowLeft className="w-5 h-5" />
-                        </button>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Chọn địa chỉ nhận hàng</h1>
+                    <div className="mb-6">
+                        <h1 className="text-xl font-bold text-gray-900 dark:text-white">Chọn địa chỉ nhận hàng</h1>
                     </div>
 
                     {/* Address List */}
@@ -258,7 +340,7 @@ export default function AddressSelection() {
                                                 {addr.address_detail}
                                             </p>
                                             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                                                {addr.ward}, {addr.district}, {addr.province}
+                                                {addr.ward ? `${addr.ward}, ` : ''}{addr.district}, {addr.province}
                                             </p>
 
                                             <button
@@ -289,10 +371,10 @@ export default function AddressSelection() {
 
             {/* Bottom Fixed Action - Adjusted width to match container */}
             <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 z-20">
-                <div className="max-w-[1440px] mx-auto px-4 lg:px-8 flex justify-end">
+                <div className="max-w-[1440px] mx-auto px-4 lg:px-8 flex justify-center">
                     <button
                         onClick={handleConfirm}
-                        className="bg-[#f69113] hover:bg-[#d97706] text-white font-bold py-3 px-8 rounded opacity-100 shadow-md transition-all active:scale-95"
+                        className="bg-[#f69113] hover:bg-[#d97706] text-white font-bold py-3 px-12 min-w-[450px] rounded opacity-100 shadow-md transition-all active:scale-95"
                     >
                         Xác nhận
                     </button>

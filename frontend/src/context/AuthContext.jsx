@@ -83,8 +83,20 @@ export const AuthProvider = ({ children }) => {
         return data;
     };
 
+    const refreshUser = async () => {
+        try {
+            const data = await authService.getCurrentUser();
+            setUser(data.user);
+            setIsAuthenticated(true);
+            return data;
+        } catch (error) {
+            console.error("Failed to refresh user:", error);
+            // Optionally handle logout if token is invalid, but maybe not for just a refresh attempt
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, loading, login, googleLogin, loginWithToken, githubLogin, register, logout, updateProfile, uploadAvatar }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, loading, login, googleLogin, loginWithToken, githubLogin, register, logout, updateProfile, uploadAvatar, refreshUser }}>
             {!loading && children}
         </AuthContext.Provider>
     );

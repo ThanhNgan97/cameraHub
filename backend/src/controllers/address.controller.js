@@ -28,7 +28,7 @@ const getAddresses = async (req, res) => {
 const addAddress = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { full_name, phone, province, district, ward, address_detail, is_default } = req.body;
+        const { full_name, phone, email, province, district, ward, address_detail, is_default } = req.body;
 
         // If setting as default, unset other defaults
         if (is_default) {
@@ -43,6 +43,7 @@ const addAddress = async (req, res) => {
                 user_id: BigInt(userId),
                 full_name,
                 phone,
+                email, // Add email
                 province,
                 district,
                 ward,
@@ -71,7 +72,7 @@ const updateAddress = async (req, res) => {
     try {
         const userId = req.user.id;
         const addressId = req.params.id;
-        const { full_name, phone, province, district, ward, address_detail, is_default } = req.body;
+        const { full_name, phone, email, province, district, ward, address_detail, is_default } = req.body;
 
         // Check if address belongs to user
         const existingAddress = await prisma.user_addresses.findFirst({
@@ -98,6 +99,7 @@ const updateAddress = async (req, res) => {
             data: {
                 full_name,
                 phone,
+                email, // Add email
                 province,
                 district,
                 ward,

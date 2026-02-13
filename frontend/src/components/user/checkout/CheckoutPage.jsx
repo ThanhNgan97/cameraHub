@@ -4,6 +4,7 @@ import Footer from '../../landing/Footer';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useCart } from '../../../context/CartContext';
 import { useAuth } from '../../../context/AuthContext';
+import addressService from '../../../services/addressService'; // Import addressService
 import ShippingForm from './ShippingForm';
 import PaymentSection from './PaymentSection';
 import OrderSummary from './OrderSummary';
@@ -35,28 +36,51 @@ export default function CheckoutPage() {
         if (selectedCity) {
             const cityData = vietnamLocations.find(c => c.name === selectedCity);
             setAvailableDistricts(cityData ? cityData.districts : []);
-            if (selectedCity !== user?.city) { // Only reset if not loading user data
-                setSelectedDistrict('');
-            }
         } else {
             setAvailableDistricts([]);
-            setSelectedDistrict('');
         }
-    }, [selectedCity, user]);
+    }, [selectedCity]);
 
-    // Pre-fill data from user profile
+    // Fetch default address on mount
     useEffect(() => {
-        if (user) {
-            setFullName(user.fullName || '');
-            setPhone(user.phone || '');
-            setEmail(user.email || '');
-            setAddress(user.address || '');
-            setSelectedCity(user.city || '');
-            // For district, we need to wait for districts to load, or just set it.
-            // Since availableDistricts is derived from selectedCity, we might need a timeout or another effect.
-            // But let's just set it for now.
-            if (user.district) setSelectedDistrict(user.district);
-        }
+        const fetchDefaultAddress = async () => {
+            if (!user) return;
+            try {
+                const response = await addressService.getAddresses();
+                if (response.success && response.addresses.length > 0) {
+                    const defaultAddr = response.addresses.find(a => a.is_default) || response.addresses[0];
+
+                    setFullName(defaultAddr.full_name || user.full_name || '');
+                    setPhone(defaultAddr.phone || user.phone || '');
+                    setEmail(defaultAddr.email || user.email || ''); // Assuming address might have email or fallback to user
+                    setAddress(defaultAddr.address_detail || '');
+                    setSelectedCity(defaultAddr.province || '');
+                    setSelectedDistrict(defaultAddr.district || '');
+                    setSelectedWard(defaultAddr.ward || '');
+
+                    // Manually set districts for the pre-selected city
+                    if (defaultAddr.province) {
+                        const cityData = vietnamLocations.find(c => c.name === defaultAddr.province);
+                        setAvailableDistricts(cityData ? cityData.districts : []);
+                    }
+                } else {
+                    // Fallback to user profile data if no address found
+                    setFullName(user.full_name || '');
+                    setPhone(user.phone || '');
+                    setEmail(user.email || '');
+                }
+            } catch (error) {
+                console.error("Failed to fetch default address", error);
+                // Fallback to user profile data on error
+                if (user) {
+                    setFullName(user.full_name || '');
+                    setPhone(user.phone || '');
+                    setEmail(user.email || '');
+                }
+            }
+        };
+
+        fetchDefaultAddress();
     }, [user]);
 
     const [isEditingAddress, setIsEditingAddress] = useState(false);
