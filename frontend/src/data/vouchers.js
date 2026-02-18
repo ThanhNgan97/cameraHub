@@ -1,0 +1,48 @@
+export const vouchers = [
+    {
+        id: 1,
+        code: 'SALE500',
+        type: 'all',
+        typeLabel: 'CAMERAHUB',
+        title: 'Giảm 500k cho đơn từ 5tr',
+        subtitle: 'Đơn tối thiểu 5tr',
+        status: 'expiring',
+        daysLeft: 2,
+        isSaved: true,
+        statusText: 'Sắp hết hạn',
+    },
+    {
+        id: 2,
+        code: 'FREESHIP',
+        type: 'shipping',
+        typeLabel: 'VẬN CHUYỂN',
+        title: 'Miễn phí vận chuyển',
+        subtitle: 'Tối đa 30k • Đơn từ 0đ',
+        status: 'active',
+        isSaved: false,
+        statusText: '',
+    },
+    {
+        id: 3,
+        code: 'FILTER10',
+        type: 'all',
+        typeLabel: 'PHỤ KIỆN',
+        title: 'Giảm 10% cho Lens Filter',
+        subtitle: 'Hết hạn: 31/12/2026',
+        status: 'active',
+        isSaved: true,
+        statusText: '',
+        image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" // Example image
+    },
+    {
+        id: 4,
+        code: 'SONY1M',
+        type: 'store',
+        typeLabel: 'CỬA HÀNG',
+        title: 'Giảm 1tr cho đơn Sony A7R',
+        subtitle: 'Số lượng đã hết',
+        status: 'out_of_stock',
+        isSaved: false,
+        statusText: '',
+    }
+];

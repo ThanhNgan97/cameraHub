@@ -62,7 +62,7 @@ export default function PersonalProfile() {
             bg: 'bg-green-50 dark:bg-green-900/10',
             title: t('profile.settings.menu.address.title'),
             desc: t('profile.settings.menu.address.desc'),
-            link: '#'
+            link: '/user/profile/address'
         },
         {
             id: 'password',

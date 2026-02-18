@@ -22,6 +22,7 @@ import TestProductSpecs from "./components/TestProductSpecs";
 function App() {
   return (
     <AuthProvider>
+      {/* Force App Update */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -38,6 +39,7 @@ function App() {
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/profile/edit" element={<PersonalProfile />} />
           <Route path="/user/profile/info" element={<EditProfile />} />
+          <Route path="/user/profile/address" element={<AddressSelection />} />
           <Route path="/user/profile/password" element={<ChangePassword />} />
           <Route path="/test-specs" element={<TestProductSpecs />} />
         </Routes>

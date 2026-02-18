@@ -15,6 +15,7 @@ app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/shops', require('./routes/shop.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/addresses', require('./routes/address.routes'));
+app.use('/api/orders', require('./routes/order.routes')); // Register order routes
 
 // Basic health check route
 app.get('/', (req, res) => {

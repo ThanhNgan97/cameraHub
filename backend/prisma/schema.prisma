@@ -115,19 +115,20 @@ model order_items {
 }
 
 model orders {
-  id             BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id        BigInt         @db.UnsignedBigInt
-  shop_id        BigInt         @db.UnsignedBigInt
-  address_id     BigInt         @db.UnsignedBigInt
-  total_price    Decimal?       @db.Decimal(12, 2)
-  payment_method String?        @db.VarChar(50)
-  status         orders_status? @default(pending)
-  created_at     DateTime?      @default(now()) @db.Timestamp(0)
-  updated_at     DateTime?      @default(now()) @db.Timestamp(0)
+  id             BigInt                 @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id        BigInt                 @db.UnsignedBigInt
+  shop_id        BigInt                 @db.UnsignedBigInt
+  address_id     BigInt                 @db.UnsignedBigInt
+  total_price    Decimal?               @db.Decimal(12, 2)
+  payment_status orders_payment_status? @default(pending)
+  payment_method String?                @db.VarChar(50)
+  status         orders_status?         @default(pending)
+  created_at     DateTime?              @default(now()) @db.Timestamp(0)
+  updated_at     DateTime?              @default(now()) @db.Timestamp(0)
   order_items    order_items[]
-  users          users          @relation(fields: [user_id], references: [id], onUpdate: NoAction, map: "orders_ibfk_1")
-  shops          shops          @relation(fields: [shop_id], references: [id], onUpdate: NoAction, map: "orders_ibfk_2")
-  user_addresses user_addresses @relation(fields: [address_id], references: [id], onUpdate: NoAction, map: "orders_ibfk_3")
+  users          users                  @relation(fields: [user_id], references: [id], onUpdate: NoAction, map: "orders_ibfk_1")
+  shops          shops                  @relation(fields: [shop_id], references: [id], onUpdate: NoAction, map: "orders_ibfk_2")
+  user_addresses user_addresses         @relation(fields: [address_id], references: [id], onUpdate: NoAction, map: "orders_ibfk_3")
   payments       payments[]
   system_orders  system_orders?
 
@@ -139,14 +140,18 @@ model orders {
 }
 
 model payments {
-  id               BigInt           @id @default(autoincrement()) @db.UnsignedBigInt
-  order_id         BigInt           @db.UnsignedBigInt
-  payment_provider String?          @db.VarChar(50)
-  transaction_id   String?          @db.VarChar(255)
-  amount           Decimal?         @db.Decimal(12, 2)
-  status           payments_status? @default(pending)
-  created_at       DateTime?        @default(now()) @db.Timestamp(0)
-  orders           orders           @relation(fields: [order_id], references: [id], onUpdate: NoAction, map: "payments_ibfk_1")
+  id                BigInt           @id @default(autoincrement()) @db.UnsignedBigInt
+  order_id          BigInt           @db.UnsignedBigInt
+  payment_provider  String?          @db.VarChar(50)
+  paypal_order_id   String?          @db.VarChar(255)
+  transaction_id    String?          @db.VarChar(255)
+  provider_response Json?
+  amount            Decimal?         @db.Decimal(12, 2)
+  status            payments_status? @default(pending)
+  created_at        DateTime?        @default(now()) @db.Timestamp(0)
+  updated_at        DateTime?        @default(now()) @db.Timestamp(0)
+  payment_splits    payment_splits[]
+  orders            orders           @relation(fields: [order_id], references: [id], onUpdate: NoAction, map: "payments_ibfk_1")
 
   @@index([order_id], map: "idx_order_id")
   @@index([transaction_id], map: "idx_transaction_id")
@@ -337,6 +342,7 @@ model shops {
   created_at         DateTime?            @default(now()) @db.Timestamp(0)
   updated_at         DateTime?            @default(now()) @db.Timestamp(0)
   orders             orders[]
+  payment_splits     payment_splits[]
   products           products[]
   shop_approvals     shop_approvals[]
   shop_discounts     shop_discounts[]
@@ -399,6 +405,7 @@ model user_addresses {
   address_detail String    @db.Text
   note           String?   @db.Text
   is_default     Boolean?  @default(false)
+  is_active      Boolean?  @default(true)
   created_at     DateTime? @default(now()) @db.Timestamp(0)
   orders         orders[]
   users          users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_addresses_ibfk_1")
@@ -424,8 +431,6 @@ model users {
   phone                  String?           @unique(map: "phone") @db.VarChar(20)
   password_hash          String            @db.Text
   avatar                 String?           @db.Text
-  dob                    DateTime?         @db.Date
-  gender                 String?           @db.VarChar(10)
   provider               String?           @default("local") @db.VarChar(50)
   provider_id            String?           @db.VarChar(255)
   role                   users_role?       @default(user)
@@ -434,6 +439,8 @@ model users {
   updated_at             DateTime?         @default(now()) @db.Timestamp(0)
   reset_password_expires DateTime?         @db.Timestamp(0)
   reset_password_token   String?           @db.VarChar(255)
+  dob                    DateTime?         @db.Date
+  gender                 String?           @db.VarChar(10)
   carts                  carts?
   notifications          notifications[]
   orders                 orders[]
@@ -476,6 +483,19 @@ model password_resets {
   users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "password_resets_ibfk_1")
 
   @@index([user_id], map: "idx_user_id")
+}
+
+model payment_splits {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  payment_id BigInt    @db.UnsignedBigInt
+  shop_id    BigInt    @db.UnsignedBigInt
+  amount     Decimal   @db.Decimal(12, 2)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  payments   payments  @relation(fields: [payment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payment_splits_ibfk_1")
+  shops      shops     @relation(fields: [shop_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payment_splits_ibfk_2")
+
+  @@index([payment_id], map: "idx_payment_id")
+  @@index([shop_id], map: "idx_shop_id")
 }
 
 enum system_discounts_discount_type {
@@ -559,4 +579,11 @@ enum products_status {
   active
   inactive
   pending
+}
+
+enum orders_payment_status {
+  pending
+  completed
+  failed
+  refunded
 }

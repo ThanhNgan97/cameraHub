@@ -1,7 +1,7 @@
 import { FaTruck, FaStore, FaCamera } from 'react-icons/fa';
 import { useLanguage } from '../../../context/LanguageContext';
 
-export default function VoucherItem({ voucher, onSelect, isSelected }) {
+export default function VoucherItem({ voucher, onSelect, isSelected, onViewConditions }) {
     const { t } = useLanguage();
 
     // Helper to get icon based on type
@@ -50,7 +50,13 @@ export default function VoucherItem({ voucher, onSelect, isSelected }) {
                     {voucher.subtitle && (
                         <p className="text-xs text-gray-500 mt-0.5">{voucher.subtitle}</p>
                     )}
-                    <button className="text-xs text-blue-500 mt-1 hover:underline text-left">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onViewConditions(voucher);
+                        }}
+                        className="text-xs text-blue-500 mt-1 hover:underline text-left"
+                    >
                         {t('voucher.conditions')}
                     </button>
                 </div>

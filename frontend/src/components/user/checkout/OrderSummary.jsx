@@ -2,14 +2,38 @@ import { FaLock, FaTicketAlt, FaChevronRight, FaTimes } from 'react-icons/fa';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useState } from 'react';
 import VoucherModal from '../voucher/VoucherModal';
+import { vouchers } from '../../../data/vouchers';
 
 export default function OrderSummary({ cartItems = [], subtotal = 0, shipping = 0, onConfirm }) {
     const { t } = useLanguage();
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [selectedVoucher, setSelectedVoucher] = useState(null);
+    const [voucherCode, setVoucherCode] = useState('');
 
-    // Calculate total with discount if any (simplified)
-    const discount = selectedVoucher ? 500000 : 0; // Mock logic - in real app this depends on voucher type
+    // Calculate total with discount based on voucher logic
+    const calculateDiscount = () => {
+        if (!selectedVoucher) return 0;
+
+        switch (selectedVoucher.id) {
+            case 1: // 500k off for order > 5M
+                return subtotal >= 5000000 ? 500000 : 0;
+            case 2: // Free shipping
+                return 0; // Shipping is already 0, so no extra discount amount on subtotal
+            case 3: // 10% off Lens Filter
+                const lensFilters = cartItems.filter(item => item.name.toLowerCase().includes('filter') || item.name.toLowerCase().includes('fujifilm'));
+                if (lensFilters.length > 0) {
+                    return lensFilters.reduce((acc, item) => acc + (item.price * item.quantity * 0.1), 0);
+                }
+                return 0;
+            case 4: // 1M off Sony A7R
+                const sonyA7R = cartItems.find(item => item.name.includes('Sony A7R') || item.name.includes('Sony Alpha'));
+                return sonyA7R ? 1000000 : 0;
+            default:
+                return 0;
+        }
+    };
+
+    const discount = calculateDiscount();
     const total = subtotal + shipping - discount;
 
     // Use cartItems directly
@@ -21,7 +45,21 @@ export default function OrderSummary({ cartItems = [], subtotal = 0, shipping = 
 
     const handleSelectVoucher = (voucher) => {
         setSelectedVoucher(voucher);
-        // In a real app, you would validate the voucher here or in the parent
+    };
+
+    const handleApplyCode = () => {
+        if (!voucherCode) return;
+        const voucher = vouchers.find(v => v.code === voucherCode.toUpperCase());
+        if (voucher) {
+            if (voucher.status === 'out_of_stock') {
+                alert(t('voucher.outOfStock') || 'Voucher đã hết lượt sử dụng');
+                return;
+            }
+            setSelectedVoucher(voucher);
+            setVoucherCode(''); // Clear input on success
+        } else {
+            alert(t('voucher.invalidCode') || 'Mã voucher không hợp lệ');
+        }
     };
 
     const VoucherSection = ({ title, placeholder }) => (
@@ -32,22 +70,31 @@ export default function OrderSummary({ cartItems = [], subtotal = 0, shipping = 
             </div>
 
             {selectedVoucher ? (
-                <div className="flex gap-2 mb-2 items-center bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-3">
-                    <span className="text-[#d97706] text-sm font-bold flex-1 line-clamp-1">{selectedVoucher.title}</span>
-                    <button onClick={() => setSelectedVoucher(null)} className="text-gray-400 hover:text-gray-600 p-1"><FaTimes /></button>
+                <div className="relative mb-3 group">
+                    <div className="flex items-center justify-between bg-[#2d1b0e] border border-[#d97706]/50 rounded-lg p-3 pr-10 shadow-sm">
+                        <span className="text-[#d97706] text-sm font-bold line-clamp-1">{selectedVoucher.title}</span>
+                    </div>
+                    <button
+                        onClick={() => setSelectedVoucher(null)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    >
+                        <FaTimes size={14} />
+                    </button>
                 </div>
             ) : (
-                <div className="flex gap-2 mb-2">
-                    <input
-                        type="text"
-                        placeholder={placeholder}
-                        readOnly
-                        onClick={() => setShowVoucherModal(true)}
-                        className="flex-1 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#d97706] cursor-pointer"
-                    />
+                <div className="flex gap-2 mb-3">
+                    <div className="flex-1 relative">
+                        <input
+                            type="text"
+                            placeholder={placeholder}
+                            value={voucherCode}
+                            onChange={(e) => setVoucherCode(e.target.value)}
+                            className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#d97706]"
+                        />
+                    </div>
                     <button
-                        onClick={() => setShowVoucherModal(true)}
-                        className="bg-[#fff7ed] hover:bg-[#ffedd5] text-[#d97706] px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-[#d97706]/20"
+                        onClick={handleApplyCode}
+                        className="bg-[#fff7ed] hover:bg-[#ffedd5] text-[#d97706] px-4 py-2 rounded-lg text-sm font-bold transition-colors border border-[#d97706]/20 whitespace-nowrap"
                     >
                         {t('checkout.apply')}
                     </button>
@@ -59,7 +106,7 @@ export default function OrderSummary({ cartItems = [], subtotal = 0, shipping = 
                 onClick={() => setShowVoucherModal(true)}
             >
                 <div className="flex items-center gap-1">
-                    <FaTicketAlt className="transform -rotate-45" />
+                    {!selectedVoucher && <FaTicketAlt className="transform -rotate-45" />}
                     <span>{t('checkout.selectVoucher')}</span>
                 </div>
                 <FaChevronRight size={10} />
@@ -112,7 +159,9 @@ export default function OrderSummary({ cartItems = [], subtotal = 0, shipping = 
                 </div>
                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                     <span>{t('checkout.shippingFee')}</span>
-                    <span className="font-bold text-green-500">{t('checkout.free')}</span>
+                    <span className={`font-bold ${shipping === 0 ? 'text-green-500' : 'text-gray-900 dark:text-white'}`}>
+                        {shipping === 0 ? t('checkout.free') : formatPrice(shipping)}
+                    </span>
                 </div>
                 {selectedVoucher && (
                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">

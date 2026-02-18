@@ -14,9 +14,11 @@ export default function OrderCard({ order, formatPrice }) {
                     <span>{order.shopName}</span>
                 </div>
                 <span className={`text-sm font-bold uppercase ${order.status === 'pending' ? 'text-[#F59E0B]' :
-                    order.status === 'shipping' ? 'text-blue-500' :
-                        order.status === 'completed' ? 'text-green-500' :
-                            'text-gray-400'
+                        order.status === 'pickup' ? 'text-blue-500' :
+                            order.status === 'shipping' ? 'text-blue-500' :
+                                order.status === 'delivered' ? 'text-green-500' :
+                                    order.status === 'returned' ? 'text-red-500' :
+                                        'text-gray-400'
                     }`}>
                     {t(`profile.status.${order.status}`)}
                 </span>
@@ -77,6 +79,11 @@ export default function OrderCard({ order, formatPrice }) {
                         </button>
                     </>
                 )}
+                {order.status === 'pickup' && (
+                    <button className="px-6 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-medium transition-colors">
+                        {t('profile.actions.cancel')}
+                    </button>
+                )}
                 {order.status === 'shipping' && (
                     <>
                         <button className="px-6 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-medium transition-colors">
@@ -87,7 +94,7 @@ export default function OrderCard({ order, formatPrice }) {
                         </button>
                     </>
                 )}
-                {order.status === 'completed' && (
+                {order.status === 'delivered' && (
                     <>
                         <button className="px-6 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-medium transition-colors">
                             {t('profile.actions.return')}
@@ -97,7 +104,7 @@ export default function OrderCard({ order, formatPrice }) {
                         </button>
                     </>
                 )}
-                {order.status === 'cancelled' && (
+                {(order.status === 'cancelled' || order.status === 'returned') && (
                     <button className="px-6 py-2 rounded-lg border border-[#F59E0B] text-[#F59E0B] hover:bg-orange-50 dark:hover:bg-orange-900/10 text-sm font-bold transition-colors w-full">
                         {t('profile.actions.buyAgain')}
                     </button>

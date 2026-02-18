@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {FaPlus, FaTruck } from 'react-icons/fa';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { FaPlus, FaTruck, FaTrash, FaCheckCircle, FaExclamationCircle, FaTimes } from 'react-icons/fa';
 import NavbarActions from '../../common/NavbarActions';
 import addressService from '../../../services/addressService';
 import { useAuth } from '../../../context/AuthContext';
 import { vietnamLocations } from '../../../i18n/vietnam_locations';
 
-const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
+const AddressModal = ({ isOpen, onClose, onSave, onDelete, initialData }) => {
     const [formData, setFormData] = useState({
         full_name: '',
         phone: '',
@@ -24,7 +24,7 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
             setFormData({
                 ...initialData,
                 email: initialData.email || '',
-
+                is_default: !!initialData.is_default
             });
             const cityData = vietnamLocations.find(c => c.name === initialData.province);
             setAvailableDistricts(cityData ? cityData.districts : []);
@@ -79,11 +79,19 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
             <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center gap-2 mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
-                    <span className="text-[#F59E0B] text-xl"><FaTruck /></span>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Thông tin nhận hàng
-                    </h3>
+                <div className="flex items-center justify-between mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[#F59E0B] text-xl"><FaTruck /></span>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                            Thông tin nhận hàng
+                        </h3>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                        <FaTimes className="w-5 h-5" />
+                    </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -192,13 +200,16 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
                     </div>
 
                     <div className="flex gap-3 pt-6">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 uppercase text-sm font-medium"
-                        >
-                            Trở lại
-                        </button>
+
+                        {onDelete && (
+                            <button
+                                type="button"
+                                onClick={onDelete}
+                                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-[#f69113] dark:text-[#f69113] hover:bg-gray-50 dark:hover:bg-gray-700 rounded uppercase text-sm font-medium"
+                            >
+                                Xóa
+                            </button>
+                        )}
                         <button
                             type="submit"
                             disabled={loading}
@@ -213,14 +224,82 @@ const AddressModal = ({ isOpen, onClose, onSave, initialData }) => {
     );
 };
 
+const DeleteModal = ({ isOpen, onClose, onConfirm, loading, isDefault }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl transform transition-all scale-100 border border-gray-100 dark:border-gray-700">
+                <div className="text-center">
+                    <div className="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-orange-50 dark:bg-orange-900/20 mb-4">
+                        <FaTrash className="h-6 w-6 text-[#F59E0B]" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Xóa địa chỉ này?</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 px-4">
+                        {isDefault
+                            ? 'Đây là địa chỉ mặc định của bạn. Bạn vẫn có thể xóa, nhưng hãy đảm bảo cập nhật lại địa chỉ mặc định mới.'
+                            : 'Bạn có chắc chắn muốn xóa địa chỉ này không? Hành động này không thể hoàn tác.'}
+                    </p>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={onClose}
+                            disabled={loading}
+                            className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-medium transition-colors"
+                        >
+                            Hủy
+                        </button>
+                        <button
+                            onClick={onConfirm}
+                            disabled={loading}
+                            className="flex-1 px-4 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white rounded-xl font-bold shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center"
+                        >
+                            {loading ? (
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                                'Xóa'
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const Toast = ({ message, type, onClose }) => {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onClose();
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+        <div className={`fixed top-24 right-4 z-[70] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg transform transition-all duration-300 animate-slide-in ${type === 'success' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'
+            }`}>
+            <div className={`text-xl ${type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                {type === 'success' ? <FaCheckCircle /> : <FaExclamationCircle />}
+            </div>
+            <p className="font-medium text-sm">{message}</p>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <FaTimes />
+            </button>
+        </div>
+    );
+};
+
 export default function AddressSelection() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { user, refreshUser } = useAuth();
     const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedId, setSelectedId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingAddress, setEditingAddress] = useState(null);
+    const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
     useEffect(() => {
         fetchAddresses();
@@ -270,6 +349,29 @@ export default function AddressSelection() {
 
         if (response.success) {
             await fetchAddresses();
+        }
+    };
+
+    const handleDeleteClick = (e, id) => {
+        e.stopPropagation();
+        setDeleteModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteModal.id) return;
+
+        setDeleteLoading(true);
+        try {
+            await addressService.deleteAddress(deleteModal.id);
+            await fetchAddresses();
+            setDeleteModal({ isOpen: false, id: null });
+            setToast({ show: true, message: 'Đã xóa địa chỉ thành công', type: 'success' });
+        } catch (error) {
+            console.error('Failed to delete address', error);
+            setDeleteModal({ isOpen: false, id: null });
+            setToast({ show: true, message: 'Không thể xóa địa chỉ này (đang được sử dụng trong đơn hàng)', type: 'error' });
+        } finally {
+            setDeleteLoading(false);
         }
     };
 
@@ -343,14 +445,25 @@ export default function AddressSelection() {
                                                 {addr.ward ? `${addr.ward}, ` : ''}{addr.district}, {addr.province}
                                             </p>
 
-                                            <button
-                                                onClick={(e) => openEditModal(e, addr)}
-                                                className="mt-3 text-sm font-medium text-[#fa8c16] hover:text-[#d97706] transition-colors"
-                                            >
-                                                Cập nhật
-                                            </button>
+                                            <div className="flex gap-2 mt-3">
+                                                <button
+                                                    onClick={(e) => openEditModal(e, addr)}
+                                                    className="text-sm font-medium text-[#fa8c16] hover:text-[#d97706] transition-colors"
+                                                >
+                                                    Cập nhật
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    {/* Delete Button */}
+                                    <button
+                                        onClick={(e) => handleDeleteClick(e, addr.id)}
+                                        className="absolute top-4 right-4 p-2 text-gray-400 hover:text-[#F59E0B] transition-colors opacity-0 group-hover:opacity-100"
+                                        title="Xóa địa chỉ"
+                                    >
+                                        <FaTrash className="w-4 h-4" />
+                                    </button>
                                 </div>
                             ))
                         )}
@@ -366,27 +479,52 @@ export default function AddressSelection() {
                         </div>
                         <span className="font-medium">Thêm địa chỉ mới</span>
                     </button>
-                </div>
-            </main>
+                </div >
+            </main >
 
-            {/* Bottom Fixed Action - Adjusted width to match container */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 z-20">
-                <div className="max-w-[1440px] mx-auto px-4 lg:px-8 flex justify-center">
-                    <button
-                        onClick={handleConfirm}
-                        className="bg-[#f69113] hover:bg-[#d97706] text-white font-bold py-3 px-12 min-w-[450px] rounded opacity-100 shadow-md transition-all active:scale-95"
-                    >
-                        Xác nhận
-                    </button>
-                </div>
-            </div>
+
+            {/* Bottom Fixed Action - Only show in checkout flow */}
+            {
+                location.pathname.includes('/checkout') && (
+                    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 z-20">
+                        <div className="max-w-[1440px] mx-auto px-4 lg:px-8 flex justify-center">
+                            <button
+                                onClick={handleConfirm}
+                                className="bg-[#f69113] hover:bg-[#d97706] text-white font-bold py-3 px-12 min-w-[450px] rounded opacity-100 shadow-md transition-all active:scale-95"
+                            >
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
 
             <AddressModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveAddress}
                 initialData={editingAddress}
+                onDelete={editingAddress ? () => {
+                    setIsModalOpen(false);
+                    setDeleteModal({ isOpen: true, id: editingAddress.id });
+                } : undefined}
             />
-        </div>
+
+            <DeleteModal
+                isOpen={deleteModal.isOpen}
+                onClose={() => setDeleteModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                loading={deleteLoading}
+                isDefault={addresses.find(a => a.id === deleteModal.id)?.is_default}
+            />
+
+            {toast.show && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast({ ...toast, show: false })}
+                />
+            )}
+        </div >
     );
 }
